@@ -23,7 +23,7 @@ const requests = {
 // add request path here
 const requestPath = {
   //Get request
-  get1stQuestion: 'auth/getQues',
+  get1stQuestion: 'auth/questions',
 
   //post request
   postQuestionsId: 'auth/getQuestion',

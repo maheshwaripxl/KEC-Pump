@@ -1,37 +1,29 @@
-import { StyleSheet, ActivityIndicator, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {StyleSheet, ActivityIndicator, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import { DM_sans_Bold, HEIGHT } from '../../../../Config/AppConst';
+import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import ApiManager from '../../../../API/Api';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 
-
-const RadioCompType1 = ({ count, setCount, getProgress, postQuestionIdAPI }) => {
+const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
   const [selectedButton, setSelectedButton] = useState(null);
-  const [loader, setLoader] = useState(false);
-  const [quesResponse, setQuesResponse] = useState([]);
-  const [ansResponse, setAnsResponse] = useState([]);
+  const [loader, setLoader] = useState(true);
+  const [responseArray, setResponseArray] = useState([]);
 
   useEffect(() => {
     QuestionsAPI();
   }, []);
 
-  // console.log('ansResponse', ansResponse);
-  // console.log('quesResponse', quesResponse);
-  
-  
-
   // Get 1st Question Api
-  const QuestionsAPI = () => {
-    setLoader(true);
-    ApiManager.get1stQuestion()
+  const QuestionsAPI = async () => {
+    await ApiManager.get1stQuestion()
       .then(res => {
-        const quesresponse = res?.data?.question;
-        setQuesResponse(quesresponse);
-        const ansresponse = res?.data?.answers;
-        setAnsResponse(ansresponse);
-        setLoader(false);
+        if (res?.data?.status === 200) {
+          const APIResponse = res?.data?.response;
+          setResponseArray(APIResponse);
+          setLoader(false);
+        }
       })
       .catch(error => {
         console.log(error);
@@ -41,11 +33,11 @@ const RadioCompType1 = ({ count, setCount, getProgress, postQuestionIdAPI }) => 
   const buttonFunction = () => {
     setCount(count + 1);
     getProgress();
-    postQuestionIdAPI(quesResponse?.next_question_id, selectedButton)
+    postQuestionIdAPI(responseArray?.id, selectedButton);
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {loader ? (
         <ActivityIndicator
           size="large"
@@ -53,36 +45,51 @@ const RadioCompType1 = ({ count, setCount, getProgress, postQuestionIdAPI }) => 
           style={styles.loader}
         />
       ) : (
-        <View style={{ marginHorizontal: 30 }}>
-          <Text style={{ color: '#fff', position: 'absolute', right: 1 }}>
+        <View style={{marginHorizontal: 30}}>
+          <Text style={{color: '#fff', position: 'absolute', right: 1}}>
             {count}/15
           </Text>
-          <View style={{ marginTop: HEIGHT(20) }}>
+          <View style={{marginTop: HEIGHT(20)}}>
             <View>
               <Text style={styles.mainTitle}>
-                {quesResponse?.question_text}
+                {responseArray?.question_text}
               </Text>
             </View>
-            <View style={{ marginTop: 10 }}>
+            <View style={{marginTop: 10}}>
               <InputBtn
-                title={ansResponse[0]?.answer_text}
-                isSelected={ansResponse?.answer_id === 1}
+                title={responseArray?.answers[0]?.answer_text}
+                isSelected={responseArray?.answers[0]?.id == selectedButton}
+                style={
+                  selectedButton == responseArray?.answers[0]?.id
+                    ? styles.boxClrChange
+                    : styles.box
+                }
                 onPress={() => {
-                  setSelectedButton(1);
+                  setSelectedButton(responseArray?.answers[0]?.id);
                 }}
               />
               <InputBtn
-                title={ansResponse[1]?.answer_text}
-                isSelected={ansResponse?.answer_id === 2}
+                title={responseArray?.answers[1]?.answer_text}
+                isSelected={responseArray?.answers[1]?.id == selectedButton}
+                style={
+                  selectedButton == responseArray?.answers[1]?.id
+                    ? styles.boxClrChange
+                    : styles.box
+                }
                 onPress={() => {
-                  setSelectedButton(2);
+                  setSelectedButton(responseArray?.answers[1]?.id);
                 }}
               />
               <InputBtn
-                title={ansResponse[2]?.answer_text}
-                isSelected={ansResponse?.answer_id === 3}
+                title={responseArray?.answers[2]?.answer_text}
+                isSelected={responseArray?.answers[2]?.id == selectedButton}
+                style={
+                  selectedButton == responseArray?.answers[2]?.id
+                    ? styles.boxClrChange
+                    : styles.box
+                }
                 onPress={() => {
-                  setSelectedButton(3);
+                  setSelectedButton(responseArray?.answers[2]?.id);
                 }}
               />
             </View>
@@ -129,5 +136,35 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  box: {
+    paddingLeft: WIDTH(4),
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderRadius: 9,
+    borderColor: COLOR.White,
+    // backgroundColor: COLOR.White,
+    gap: 6,
+    padding: 2,
+    padding: WIDTH(0.8),
+    marginBottom: HEIGHT(1),
+  },
+
+  boxClrChange: {
+    paddingLeft: WIDTH(4),
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    borderWidth: 2,
+    borderRadius: 9,
+    borderColor: 'red',
+    gap: 6,
+    padding: 2,
+    padding: WIDTH(0.8),
+    marginBottom: HEIGHT(1),
+    backgroundColor: '#BFFFF3',
   },
 });

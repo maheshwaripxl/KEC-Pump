@@ -1,59 +1,84 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { DM_sans_Bold, DM_sans_Medium, FONTSIZE, HEIGHT } from '../../../../Config/AppConst';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  DM_sans_Bold,
+  DM_sans_Medium,
+  HEIGHT,
+} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import { useSelector } from 'react-redux';
 
 const RadioCompType3 = ({
   count,
   setCount,
   getProgress,
   APIresponse,
+  answerResponse,
   postQuestionIdAPI,
 }) => {
-
-  const selector = useSelector((state) => state.AnswerData);
-  console.log('selectorrdfgrger', selector?.answerID);
+  const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
+    postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
     getProgress();
-    setCount(8)
-    getProgress();
-    postQuestionIdAPI(14)
-
+    setCount(count + 1);
   };
 
   return (
     <View>
-      <View style={{ marginTop: HEIGHT(10) }}>
+      <View style={{marginTop: HEIGHT(10), marginHorizontal: 20}}>
         <View>
-          <Text style={styles.mainTitle}>
-            {APIresponse?.question?.question_text}
-          </Text>
+          <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
         </View>
 
-        <View style={[styles.viewWrapper, { justifyContent: 'center' }]}>
-          <TouchableOpacity style={styles.yesNoBtn}>
-            <Text style={{ color: '#fff', fontFamily: DM_sans_Medium }}>
-              Yes
+        <View style={[styles.viewWrapper, {justifyContent: 'center'}]}>
+          <TouchableOpacity
+            style={
+              selectedButton == answerResponse[1]?.answer_id
+                ? styles.yesNoBtnClrChng
+                : styles.yesNoBtn
+            }
+            isSelect={answerResponse[1]?.answer_id === selectedButton}
+            onPress={() => setSelectedButton(answerResponse[1]?.answer_id)}>
+            <Text
+              style={
+                selectedButton == answerResponse[1]?.answer_id
+                  ? styles.yesNoTxtClrChng
+                  : styles.yesNoTxt
+              }>
+              {answerResponse[1]?.answer_text}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.yesNoBtn}>
-            <Text style={{ color: '#fff', fontFamily: DM_sans_Medium }}>
-              No
+          <TouchableOpacity
+            style={
+              selectedButton == answerResponse[0]?.answer_id
+                ? styles.yesNoBtnClrChng
+                : styles.yesNoBtn
+            }
+            isSelect={answerResponse[0]?.answer_id === selectedButton}
+            onPress={() => setSelectedButton(answerResponse[0]?.answer_id)}>
+            <Text
+              style={
+                selectedButton == answerResponse[0]?.answer_id
+                  ? styles.yesNoTxtClrChng
+                  : styles.yesNoTxt
+              }>
+              {answerResponse[0]?.answer_text}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.button}>
-          <CustomButton btnText="GO TO PH" onpress={buttonFunction} />
+          <CustomButton
+            btnText={APIresponse[0]?.button}
+            onpress={buttonFunction}
+          />
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default RadioCompType3
+export default RadioCompType3;
 
 const styles = StyleSheet.create({
   mainTitle: {
@@ -78,8 +103,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 
+  yesNoBtnClrChng: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 45,
+    width: 115,
+    borderColor: 'white',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+  },
+
+  yesNoTxt: {
+    color: '#fff',
+    fontFamily: DM_sans_Medium,
+  },
+
+  yesNoTxtClrChng: {
+    color: 'black',
+    fontFamily: DM_sans_Medium,
+  },
+
   button: {
     position: 'absolute',
     top: HEIGHT(67),
   },
-})
+});
