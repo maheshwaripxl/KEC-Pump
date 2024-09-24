@@ -2,6 +2,7 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
+import Snackbar from 'react-native-snackbar';
 
 const RadioCompType4 = ({
   count,
@@ -14,9 +15,17 @@ const RadioCompType4 = ({
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
-    postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-    getProgress();
-    // setCount(10)
+    if (selectedButton == null) {
+      Snackbar.show({
+        text: 'Select atleast one option',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
+      getProgress();
+      // setCount(10)
+    }
   };
 
   return (

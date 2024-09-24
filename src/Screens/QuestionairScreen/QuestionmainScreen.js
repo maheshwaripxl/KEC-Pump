@@ -1,9 +1,9 @@
-import {ImageBackground, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
 import Progressbar from './Progressbar';
 import Header from '../../Components/Header/Header';
 import ApiManager from '../../API/Api';
-import {ActivityIndicator} from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 import RadioCompType1 from './QuestionComponents/RadioComponent/RadioCompType1';
 import RadioCompType2 from './QuestionComponents/RadioComponent/RadioCompType2';
 import RadioCompType3 from './QuestionComponents/RadioComponent/RadioCompType3';
@@ -18,6 +18,9 @@ const QuestionmainScreen = () => {
   const [loader, setLoader] = useState(false);
   const [response, setResponse] = useState([]);
   const [answerResponse, setAnswerResponse] = useState([]);
+
+  console.log('1111', response?.question_type);
+
 
   const updateProgress = () => {
     setprogress(progress >= 80 ? progress + 6.66 : progress + 6.66);
@@ -275,12 +278,14 @@ const QuestionmainScreen = () => {
     }
   };
 
+
+ 
   return (
     <ImageBackground
       source={require('../../Images/background.png')}
-      style={{flex: 1}}>
+      style={{ flex: 1 }}>
       <Header />
-      <View style={{marginHorizontal: 20}}>
+      <View style={{ marginHorizontal: 20 }}>
         <Progressbar
           progress={progress}
           count={count}
@@ -289,8 +294,8 @@ const QuestionmainScreen = () => {
       </View>
 
       {loader ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator theme={{colors: {primary: 'gray'}}} size="large" />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator theme={{ colors: { primary: 'gray' } }} size="large" />
         </View>
       ) : (
         renderComponents()

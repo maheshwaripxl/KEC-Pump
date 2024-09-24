@@ -1,8 +1,9 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
+import Snackbar from 'react-native-snackbar';
 
 const InputComp1 = ({
   count,
@@ -12,10 +13,21 @@ const InputComp1 = ({
   answerResponse,
   postQuestionIdAPI,
 }) => {
+  const [inputValue, setInputValue] = useState('');
+
   const buttonFunction = () => {
-    postQuestionIdAPI(APIresponse[0]?.next_question_id);
-    setCount(count + 1);
-    getProgress();
+    if (inputValue == '') {
+      Snackbar.show({
+        text: 'Please fill out this field',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      postQuestionIdAPI(APIresponse[0]?.next_question_id);
+      setInputValue('');
+      setCount(count + 1);
+      getProgress();
+    }
   };
 
   return (
@@ -30,7 +42,12 @@ const InputComp1 = ({
           </View>
 
           <View style={styles.inputView}>
-            <TextInput placeholderTextColor={'#fff'} style={styles.input} />
+            <TextInput
+              value={inputValue}
+              onChangeText={text => setInputValue(text)}
+              placeholderTextColor={'#fff'}
+              style={styles.input}
+            />
           </View>
 
           <View style={styles.button}>
@@ -59,12 +76,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     padding: 9,
+    width: WIDTH(85),
+    height: HEIGHT(8),
     marginTop: HEIGHT(5),
     borderRadius: 5,
   },
 
   input: {
-    width: WIDTH(80),
+    width: WIDTH(85),
     color: COLOR.White,
   },
 

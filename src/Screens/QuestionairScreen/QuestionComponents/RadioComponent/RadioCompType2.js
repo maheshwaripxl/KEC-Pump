@@ -17,7 +17,7 @@ const RadioCompType2 = ({
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
-    if (selectedButton == '') {
+    if (selectedButton == null) {
       Snackbar.show({
         text: 'Select atleast one option',
         backgroundColor: '#D1264A',
@@ -58,28 +58,28 @@ const RadioCompType2 = ({
             <View style={{marginTop: 10}}>
               <InputBtn
                 title={answerResponse[0]?.answer_text}
-                isSelected={answerResponse[0]?.answer_id == selectedButton}
+                isSelected={answerResponse[0]?.answer_id === selectedButton}
                 onPress={() => {
                   setSelectedButton(answerResponse[0]?.answer_id);
                 }}
               />
               <InputBtn
                 title={answerResponse[1]?.answer_text}
-                isSelected={answerResponse[1]?.answer_id == selectedButton}
+                isSelected={answerResponse[1]?.answer_id === selectedButton}
                 onPress={() => {
                   setSelectedButton(answerResponse[1]?.answer_id);
                 }}
               />
               <InputBtn
                 title={answerResponse[2]?.answer_text}
-                isSelected={answerResponse[2]?.answer_id == selectedButton}
+                isSelected={answerResponse[2]?.answer_id === selectedButton}
                 onPress={() => {
                   setSelectedButton(answerResponse[2]?.answer_id);
                 }}
               />
               <InputBtn
                 title={answerResponse[3]?.answer_text}
-                isSelected={answerResponse[3]?.answer_id == selectedButton}
+                isSelected={answerResponse[3]?.answer_id === selectedButton}
                 onPress={() => {
                   setSelectedButton(answerResponse[3]?.answer_id);
                 }}

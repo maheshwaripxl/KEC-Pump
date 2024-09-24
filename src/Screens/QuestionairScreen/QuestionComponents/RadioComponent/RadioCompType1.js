@@ -5,11 +5,15 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import ApiManager from '../../../../API/Api';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
+import Snackbar from 'react-native-snackbar';
 
 const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
   const [selectedButton, setSelectedButton] = useState(null);
   const [loader, setLoader] = useState(true);
   const [responseArray, setResponseArray] = useState([]);
+
+
+  console.log('1111', responseArray?.question_type);
 
   useEffect(() => {
     QuestionsAPI();
@@ -31,9 +35,17 @@ const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
   };
 
   const buttonFunction = () => {
-    setCount(count + 1);
-    getProgress();
-    postQuestionIdAPI(responseArray?.id, selectedButton);
+    if (selectedButton == null) {
+      Snackbar.show({
+        text: 'Select atleast one option',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      postQuestionIdAPI(responseArray?.id, selectedButton);
+      getProgress();
+      setCount(count + 1);
+    }
   };
 
   return (
