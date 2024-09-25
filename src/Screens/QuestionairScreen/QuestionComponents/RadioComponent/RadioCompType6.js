@@ -2,6 +2,7 @@ import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
+import Snackbar from 'react-native-snackbar';
 
 const RadioCompType6 = ({
   getProgress,
