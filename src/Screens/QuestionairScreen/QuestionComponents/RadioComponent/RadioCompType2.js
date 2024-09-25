@@ -6,8 +6,6 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
 
 const RadioCompType2 = ({
-  count,
-  setCount,
   loader,
   getProgress,
   APIresponse,
@@ -26,11 +24,9 @@ const RadioCompType2 = ({
     } else {
       if (selectedButton == 6 || selectedButton == 7) {
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        setCount(10);
         getProgress();
       } else {
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        setCount(5);
         getProgress();
       }
     }
@@ -46,9 +42,9 @@ const RadioCompType2 = ({
         />
       ) : (
         <View style={{marginHorizontal: 30}}>
-          <Text style={{color: '#fff', position: 'absolute', right: 1}}>
+          {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
             {count}/15
-          </Text>
+          </Text> */}
           <View style={{marginTop: HEIGHT(16)}}>
             <View>
               <Text style={styles.mainTitle}>
@@ -91,7 +87,8 @@ const RadioCompType2 = ({
                 position: 'absolute',
                 top: HEIGHT(61),
               }}>
-              {selectedButton === 4 || selectedButton === 5 ? (
+              {selectedButton == answerResponse[0]?.answer_id ||
+              selectedButton == answerResponse[1]?.answer_id ? (
                 <CustomButton
                   btnText="GO TO VISCOSITY"
                   onpress={() => buttonFunction()}

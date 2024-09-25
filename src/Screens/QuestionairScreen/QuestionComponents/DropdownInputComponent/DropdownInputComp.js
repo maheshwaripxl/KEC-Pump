@@ -5,20 +5,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   DM_sans_Bold,
   FONTSIZE,
   HEIGHT,
   WIDTH,
 } from '../../../../Config/AppConst';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
 
 const DropdownInputComp = ({
-  count,
-  setCount,
   getProgress,
   APIresponse,
   answerResponse,
@@ -45,18 +43,17 @@ const DropdownInputComp = ({
       setInputValue('');
       setSelectId(null);
       getProgress();
-      setCount(count + 1);
     }
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ marginHorizontal: 20 }}>
-        <Text style={{ color: '#fff', position: 'absolute', right: 1 }}>
+    <View style={{flex: 1}}>
+      <View style={{marginHorizontal: 20}}>
+        {/* <Text style={{ color: '#fff', position: 'absolute', right: 1 }}>
           {count}/15
-        </Text>
+        </Text> */}
 
-        <View style={{ marginTop: HEIGHT(10) }}>
+        <View style={{marginTop: HEIGHT(10)}}>
           <View>
             <Text style={styles.mainTitle}>
               {APIresponse[0]?.question_text}
@@ -84,16 +81,16 @@ const DropdownInputComp = ({
               <TextInput
                 style={styles.input}
                 value={inputValue}
-                onChange={txt => {
+                onChangeText={txt => {
                   setInputValue(txt);
                 }}
               />
             </View>
             <TouchableOpacity style={styles.circle}>
-              <Text style={{ color: '#fff' }}>+</Text>
+              <Text style={{color: '#fff'}}>+</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.circle}>
-              <Text style={{ color: '#fff' }}>--</Text>
+              <Text style={{color: '#fff'}}>--</Text>
             </TouchableOpacity>
           </View>
 

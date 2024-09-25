@@ -7,32 +7,13 @@ import ApiManager from '../../../../API/Api';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 import Snackbar from 'react-native-snackbar';
 
-const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
+const RadioCompType1 = ({
+  getProgress,
+  loader,
+  responseArray,
+  postQuestionIdAPI,
+}) => {
   const [selectedButton, setSelectedButton] = useState(null);
-  const [loader, setLoader] = useState(true);
-  const [responseArray, setResponseArray] = useState([]);
-
-
-  console.log('1111', responseArray?.question_type);
-
-  useEffect(() => {
-    QuestionsAPI();
-  }, []);
-
-  // Get 1st Question Api
-  const QuestionsAPI = async () => {
-    await ApiManager.get1stQuestion()
-      .then(res => {
-        if (res?.data?.status === 200) {
-          const APIResponse = res?.data?.response;
-          setResponseArray(APIResponse);
-          setLoader(false);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   const buttonFunction = () => {
     if (selectedButton == null) {
@@ -44,7 +25,6 @@ const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
     } else {
       postQuestionIdAPI(responseArray?.id, selectedButton);
       getProgress();
-      setCount(count + 1);
     }
   };
 
@@ -58,9 +38,9 @@ const RadioCompType1 = ({count, setCount, getProgress, postQuestionIdAPI}) => {
         />
       ) : (
         <View style={{marginHorizontal: 30}}>
-          <Text style={{color: '#fff', position: 'absolute', right: 1}}>
+          {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
             {count}/15
-          </Text>
+          </Text> */}
           <View style={{marginTop: HEIGHT(20)}}>
             <View>
               <Text style={styles.mainTitle}>

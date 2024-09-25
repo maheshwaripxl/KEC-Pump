@@ -3,8 +3,12 @@ import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 
-const Header = () => {
+const Header = ({APIresponse, getesponseArray}) => {
   const navigation = useNavigation();
+
+  // console.log('responseresponseresponse', APIresponse);
+  // console.log('getesponseArraygetesponseArray', getesponseArray);
+
 
   const goBackFunction = () => {
     navigation.goBack();

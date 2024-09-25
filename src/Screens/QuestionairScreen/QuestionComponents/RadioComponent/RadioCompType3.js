@@ -9,8 +9,6 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
 
 const RadioCompType3 = ({
-  count,
-  setCount,
   getProgress,
   APIresponse,
   answerResponse,
@@ -28,7 +26,6 @@ const RadioCompType3 = ({
     } else {
       postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
       getProgress();
-      setCount(count + 1);
     }
   };
 
@@ -40,23 +37,6 @@ const RadioCompType3 = ({
         </View>
 
         <View style={[styles.viewWrapper, {justifyContent: 'center'}]}>
-          <TouchableOpacity
-            style={
-              selectedButton == answerResponse[1]?.answer_id
-                ? styles.yesNoBtnClrChng
-                : styles.yesNoBtn
-            }
-            isSelect={answerResponse[1]?.answer_id === selectedButton}
-            onPress={() => setSelectedButton(answerResponse[1]?.answer_id)}>
-            <Text
-              style={
-                selectedButton == answerResponse[1]?.answer_id
-                  ? styles.yesNoTxtClrChng
-                  : styles.yesNoTxt
-              }>
-              {answerResponse[1]?.answer_text}
-            </Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={
               selectedButton == answerResponse[0]?.answer_id
@@ -72,6 +52,23 @@ const RadioCompType3 = ({
                   : styles.yesNoTxt
               }>
               {answerResponse[0]?.answer_text}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              selectedButton == answerResponse[1]?.answer_id
+                ? styles.yesNoBtnClrChng
+                : styles.yesNoBtn
+            }
+            isSelect={answerResponse[1]?.answer_id === selectedButton}
+            onPress={() => setSelectedButton(answerResponse[1]?.answer_id)}>
+            <Text
+              style={
+                selectedButton == answerResponse[1]?.answer_id
+                  ? styles.yesNoTxtClrChng
+                  : styles.yesNoTxt
+              }>
+              {answerResponse[1]?.answer_text}
             </Text>
           </TouchableOpacity>
         </View>

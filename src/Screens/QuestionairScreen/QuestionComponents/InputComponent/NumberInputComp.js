@@ -1,13 +1,11 @@
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import Snackbar from 'react-native-snackbar';
 
-const InputComp2 = ({
-  count,
-  setCount,
+const NumberInputComp = ({
   getProgress,
   APIresponse,
   answerResponse,
@@ -25,7 +23,6 @@ const InputComp2 = ({
     } else {
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
       setInputValue('');
-      setCount(count + 1);
       getProgress();
     }
   };
@@ -33,9 +30,9 @@ const InputComp2 = ({
   return (
     <View style={{flex: 1}}>
       <View style={{marginHorizontal: 30}}>
-        <Text style={{color: '#fff', position: 'absolute', right: 1}}>
+        {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
           {count}/15
-        </Text>
+        </Text> */}
         <View style={{marginTop: HEIGHT(20)}}>
           <View>
             <Text style={styles.title1}>{APIresponse[0]?.question_text}</Text>
@@ -45,6 +42,7 @@ const InputComp2 = ({
             <TextInput
               value={inputValue}
               onChangeText={text => setInputValue(text)}
+              keyboardType="number-pad"
               placeholderTextColor={'#fff'}
               style={styles.input}
             />
@@ -62,7 +60,7 @@ const InputComp2 = ({
   );
 };
 
-export default InputComp2;
+export default NumberInputComp;
 
 const styles = StyleSheet.create({
   title1: {

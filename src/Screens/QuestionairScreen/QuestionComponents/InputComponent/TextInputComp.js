@@ -5,9 +5,7 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import Snackbar from 'react-native-snackbar';
 
-const InputComp1 = ({
-  count,
-  setCount,
+const TextInputComp = ({
   getProgress,
   APIresponse,
   answerResponse,
@@ -25,7 +23,6 @@ const InputComp1 = ({
     } else {
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
       setInputValue('');
-      setCount(count + 1);
       getProgress();
     }
   };
@@ -33,9 +30,9 @@ const InputComp1 = ({
   return (
     <View style={{flex: 1}}>
       <View style={{marginHorizontal: 30}}>
-        <Text style={{color: '#fff', position: 'absolute', right: 1}}>
+        {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
           {count}/15
-        </Text>
+        </Text> */}
         <View style={{marginTop: HEIGHT(20)}}>
           <View>
             <Text style={styles.title1}>{APIresponse[0]?.question_text}</Text>
@@ -62,7 +59,7 @@ const InputComp1 = ({
   );
 };
 
-export default InputComp1;
+export default TextInputComp;
 
 const styles = StyleSheet.create({
   title1: {

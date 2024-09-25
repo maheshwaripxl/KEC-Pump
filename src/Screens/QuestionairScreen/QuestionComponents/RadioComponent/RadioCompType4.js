@@ -5,8 +5,6 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
 
 const RadioCompType4 = ({
-  count,
-  setCount,
   getProgress,
   APIresponse,
   answerResponse,
@@ -22,17 +20,21 @@ const RadioCompType4 = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
-      postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-      getProgress();
-      // setCount(10)
+      if (selectedButton == answerResponse[2]?.answer_id) {
+        postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
+        getProgress();
+      } else {
+        postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
+        getProgress();
+      }
     }
   };
 
   return (
     <View style={{flex: 1, marginHorizontal: 20}}>
-      <Text style={{color: '#fff', position: 'absolute', right: 1}}>
+      {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
         {count}/15
-      </Text>
+      </Text> */}
 
       <View style={{marginTop: HEIGHT(7)}}>
         <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
@@ -94,10 +96,17 @@ const RadioCompType4 = ({
         </View>
 
         <View style={styles.button}>
-          <CustomButton
-            btnText={APIresponse[0]?.button}
-            onpress={() => buttonFunction()}
-          />
+          {selectedButton == answerResponse[2]?.answer_id ? (
+            <CustomButton
+              btnText="GO TO SELF PRIMING"
+              onpress={() => buttonFunction()}
+            />
+          ) : (
+            <CustomButton
+              btnText="GO TO SUBMERSIBILITY"
+              onpress={() => buttonFunction()}
+            />
+          )}
         </View>
       </View>
     </View>
