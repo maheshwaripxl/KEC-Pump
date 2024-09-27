@@ -4,6 +4,7 @@ import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import Snackbar from 'react-native-snackbar';
+import BackButton from '../../../../Components/CustomButton/BackButton';
 
 const NumberInputComp = ({
   getProgress,
@@ -29,11 +30,11 @@ const NumberInputComp = ({
 
   return (
     <View style={{flex: 1}}>
-      <View style={{marginHorizontal: 30}}>
+      <View style={{marginHorizontal: 20}}>
         {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
           {count}/15
         </Text> */}
-        <View style={{marginTop: HEIGHT(20)}}>
+        <View style={{marginTop: HEIGHT(15)}}>
           <View>
             <Text style={styles.title1}>{APIresponse[0]?.question_text}</Text>
           </View>
@@ -49,6 +50,7 @@ const NumberInputComp = ({
           </View>
 
           <View style={styles.button}>
+            {/* <BackButton APIresponse={APIresponse} /> */}
             <CustomButton
               btnText={APIresponse[0]?.button}
               onpress={buttonFunction}
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fff',
     padding: 9,
-    width: WIDTH(85),
+    width: WIDTH(90),
     height: HEIGHT(8),
     marginTop: HEIGHT(5),
     borderRadius: 5,
@@ -86,7 +88,11 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
-    top: HEIGHT(57),
+    top: HEIGHT(64),
+    gap: 10,
   },
 });

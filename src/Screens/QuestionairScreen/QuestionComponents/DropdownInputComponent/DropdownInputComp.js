@@ -80,6 +80,7 @@ const DropdownInputComp = ({
               />
               <TextInput
                 style={styles.input}
+                keyboardType="numeric"
                 value={inputValue}
                 onChangeText={txt => {
                   setInputValue(txt);
@@ -183,7 +184,11 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
+    gap: 10,
     top: HEIGHT(67),
   },
 });

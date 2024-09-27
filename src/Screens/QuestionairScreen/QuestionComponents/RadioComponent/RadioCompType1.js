@@ -1,9 +1,8 @@
 import {StyleSheet, ActivityIndicator, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
-import ApiManager from '../../../../API/Api';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 import Snackbar from 'react-native-snackbar';
 
@@ -24,6 +23,9 @@ const RadioCompType1 = ({
       });
     } else {
       postQuestionIdAPI(responseArray?.id, selectedButton);
+      postQuestionIdAPI(40, 150); // multiple ques
+      postQuestionIdAPI(29, 72); // drive que
+
       getProgress();
     }
   };
@@ -120,8 +122,12 @@ export const styles = StyleSheet.create({
   },
 
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
     top: HEIGHT(57),
+    gap: 10,
   },
 
   loader: {

@@ -7,12 +7,16 @@ import {ActivityIndicator} from 'react-native-paper';
 import RadioCompType1 from './QuestionComponents/RadioComponent/RadioCompType1';
 import RadioCompType2 from './QuestionComponents/RadioComponent/RadioCompType2';
 import RadioCompType3 from './QuestionComponents/RadioComponent/RadioCompType3';
-import NumberInputComp from './QuestionComponents/InputComponent/NumberInputComp';
-import TextInputComp from './QuestionComponents/InputComponent/TextInputComp';
 import RadioCompType4 from './QuestionComponents/RadioComponent/RadioCompType4';
-import DropdownInputComp from './QuestionComponents/DropdownInputComponent/DropdownInputComp';
 import RadioCompType5 from './QuestionComponents/RadioComponent/RadioCompType5';
 import RadioCompType6 from './QuestionComponents/RadioComponent/RadioCompType6';
+import RadioCompType7 from './QuestionComponents/RadioComponent/RadioCompType7';
+import RadioCompType8 from './QuestionComponents/RadioComponent/RadioCompType8';
+import NumberInputComp from './QuestionComponents/InputComponent/NumberInputComp';
+import TextInputComp from './QuestionComponents/InputComponent/TextInputComp';
+import DropdownInputComp from './QuestionComponents/DropdownInputComponent/DropdownInputComp';
+import RadioCompType9 from './QuestionComponents/RadioComponent/RadioCompType9';
+import CheckboxComp from './QuestionComponents/CheckboxComponent/CheckboxComp';
 
 const QuestionmainScreen = () => {
   const [count, setCount] = useState('');
@@ -187,6 +191,63 @@ const QuestionmainScreen = () => {
       case 'radio6':
         return (
           <RadioCompType6
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+      case 'radio7':
+        return (
+          <RadioCompType7
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+      case 'radio8':
+        return (
+          <RadioCompType8
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+      case 'radio9':
+        return (
+          <RadioCompType9
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+
+      case 'cheakbox':
+        return (
+          <CheckboxComp
             count={count}
             setCount={setCount}
             loader={loader}

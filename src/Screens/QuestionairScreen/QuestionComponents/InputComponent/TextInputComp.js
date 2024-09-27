@@ -85,7 +85,11 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
     top: HEIGHT(57),
+    gap: 10,
   },
 });

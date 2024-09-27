@@ -82,11 +82,7 @@ const RadioCompType2 = ({
               />
             </View>
 
-            <View
-              style={{
-                position: 'absolute',
-                top: HEIGHT(61),
-              }}>
+            <View style={styles.button}>
               {selectedButton == answerResponse[0]?.answer_id ||
               selectedButton == answerResponse[1]?.answer_id ? (
                 <CustomButton
@@ -115,5 +111,14 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     fontFamily: DM_sans_Bold,
+  },
+
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    top: HEIGHT(61),
+    gap: 10,
   },
 });

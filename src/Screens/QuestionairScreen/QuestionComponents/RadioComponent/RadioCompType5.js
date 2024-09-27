@@ -8,7 +8,12 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
+import {
+  DM_sans_Bold,
+  DM_sans_Medium,
+  HEIGHT,
+  WIDTH,
+} from '../../../../Config/AppConst';
 
 const RadioCompType5 = ({
   getProgress,
@@ -39,25 +44,16 @@ const RadioCompType5 = ({
   const ShowOptionsFunction = item => {
     return (
       <TouchableOpacity
-        style={styles.optionviewWrapper}
+        activeOpacity={0.4}
+        style={
+          selectedButton == item?.item?.answer_id
+            ? styles.optionviewWrapperClrChng
+            : styles.optionviewWrapper
+        }
         onPress={() => setSelectedButton(item?.item?.answer_id)}
         isSelected={item?.item?.answer_id === selectedButton}>
-        <Image
-          source={{uri: item?.item?.image_type}}
-          style={
-            selectedButton == item?.item?.answer_id
-              ? styles.imgClrChng
-              : styles.img
-          }
-        />
-        <Text
-          style={
-            selectedButton == item?.item?.answer_id
-              ? styles.TxtClrChng
-              : styles.Txt
-          }>
-          {item?.item?.answer_text}
-        </Text>
+        <Image source={{uri: item?.item?.image_type}} style={styles.img} />
+        <Text style={styles.Txt}>{item?.item?.answer_text}</Text>
       </TouchableOpacity>
     );
   };
@@ -67,9 +63,14 @@ const RadioCompType5 = ({
       <View style={{marginTop: HEIGHT(7)}}>
         <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
 
+        <Text style={styles.desc}>{APIresponse[0]?.question_description}</Text>
+
         <View
           style={{
             marginTop: HEIGHT(3),
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 25,
           }}>
           <FlatList
             key={answerResponse?.answer_id}
@@ -108,42 +109,42 @@ const styles = StyleSheet.create({
     fontFamily: DM_sans_Bold,
   },
 
+  desc: {
+    color: '#D7D7D7',
+    fontSize: 13,
+    marginBottom: 6,
+    fontFamily: DM_sans_Medium,
+    textAlign: 'center',
+  },
+
   optionviewWrapper: {
+    gap: 20,
+    padding: 10,
+    marginTop: 10,
     borderWidth: 1,
     height: HEIGHT(45),
-    width: WIDTH(24),
-    marginRight: WIDTH(2),
-    gap: 10,
-    padding: 10,
-    borderColor: '#fff',
-    marginTop: 10,
+    width: WIDTH(34),
+    marginRight: WIDTH(4),
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: HEIGHT(7),
+    borderColor: 'gray',
   },
 
   optionviewWrapperClrChng: {
-    backgroundColor: '#fff',
+    gap: 20,
+    padding: 10,
+    marginTop: 10,
     borderWidth: 1,
     height: HEIGHT(45),
-    width: WIDTH(24),
-    marginRight: WIDTH(2),
-    gap: 10,
-    padding: 10,
-    borderColor: '#fff',
-    marginTop: 10,
+    width: WIDTH(34),
+    marginRight: WIDTH(4),
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: HEIGHT(7),
+    borderColor: '#885F08',
   },
 
   Txt: {
     color: '#fff',
-    alignSelf: 'center',
-  },
-
-  TxtClrChng: {
-    color: 'black',
     alignSelf: 'center',
   },
 
@@ -153,14 +154,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 
-  imgClrChng: {
-    height: HEIGHT(14),
-    width: WIDTH(20),
-    alignSelf: 'center',
-  },
-
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
+    gap: 10,
     top: HEIGHT(72),
   },
 });

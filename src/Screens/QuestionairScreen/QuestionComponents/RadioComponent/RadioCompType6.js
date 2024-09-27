@@ -1,8 +1,19 @@
-import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import Snackbar from 'react-native-snackbar';
+import {
+  DM_sans_Bold,
+  DM_sans_Medium,
+  HEIGHT,
+  WIDTH,
+} from '../../../../Config/AppConst';
 
 const RadioCompType6 = ({
   getProgress,
@@ -33,32 +44,26 @@ const RadioCompType6 = ({
   const ShowOptionsFunction = item => {
     return (
       <TouchableOpacity
-        style={styles.optionviewWrapper}
+        activeOpacity={0.4}
+        style={
+          selectedButton == item?.item?.answer_id
+            ? styles.optionviewWrapperClrChng
+            : styles.optionviewWrapper
+        }
         onPress={() => setSelectedButton(item?.item?.answer_id)}
         isSelected={item?.item?.answer_id === selectedButton}>
-        <Image
-          source={{uri: item?.item?.image_type}}
-          style={
-            selectedButton == item?.item?.answer_id
-              ? styles.imgClrChng
-              : styles.img
-          }
-        />
-        <Text
-          style={
-            selectedButton == item?.item?.answer_id
-              ? styles.TxtClrChng
-              : styles.Txt
-          }>
-          {item?.item?.answer_text}
-        </Text>
+        <Image source={{uri: item?.item?.image_type}} style={styles.img} />
+        <Text style={styles.Txt}>{item?.item?.answer_text}</Text>
       </TouchableOpacity>
     );
   };
+
   return (
-    <View style={{flex: 1, marginHorizontal: 20}}>
+    <View style={{flex: 1, marginHorizontal: 15}}>
       <View style={{marginTop: HEIGHT(7)}}>
         <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
+
+        <Text style={styles.desc}>{APIresponse[0]?.question_description}</Text>
 
         <View
           style={{
@@ -73,14 +78,19 @@ const RadioCompType6 = ({
         </View>
 
         <View style={styles.button}>
-          {selectedButton == answerResponse[2]?.answer_id ? (
+          {selectedButton == answerResponse[1]?.answer_id ? (
             <CustomButton
-              btnText="GO TO HYGINE COMPLIANCE"
+              btnText="GO TO IMMERSION DEPTH"
+              onpress={() => buttonFunction()}
+            />
+          ) : selectedButton == answerResponse[3]?.answer_id ? (
+            <CustomButton
+              btnText="GO TO SHAFT DEPTH"
               onpress={() => buttonFunction()}
             />
           ) : (
             <CustomButton
-              btnText="GO TO DRIVE"
+              btnText="GO TO INDUSTRY"
               onpress={() => buttonFunction()}
             />
           )}
@@ -101,59 +111,64 @@ const styles = StyleSheet.create({
     fontFamily: DM_sans_Bold,
   },
 
+  desc: {
+    color: '#D7D7D7',
+    fontSize: 13,
+    marginBottom: 6,
+    fontFamily: DM_sans_Medium,
+    textAlign: 'center',
+  },
+
   optionviewWrapper: {
+    gap: 20,
+    padding: 7,
+    marginTop: 10,
     borderWidth: 1,
     height: HEIGHT(45),
-    width: WIDTH(24),
-    marginRight: WIDTH(2),
-    gap: 10,
-    padding: 10,
-    borderColor: '#fff',
-    marginTop: 10,
+    marginRight: WIDTH(1.5),
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: HEIGHT(7),
+    borderColor: 'gray',
   },
 
   optionviewWrapperClrChng: {
-    backgroundColor: '#fff',
+    gap: 20,
+    padding: 7,
+    marginTop: 10,
     borderWidth: 1,
     height: HEIGHT(45),
-    width: WIDTH(24),
-    marginRight: WIDTH(2),
-    gap: 10,
-    padding: 10,
-    borderColor: '#fff',
-    marginTop: 10,
+    marginRight: WIDTH(1.5),
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: HEIGHT(7),
+    borderColor: '#885F08',
   },
 
   Txt: {
     color: '#fff',
-    alignSelf: 'center',
+    width: WIDTH(17),
+    fontSize: 12,
+    textAlign: 'center',
   },
 
   TxtClrChng: {
     color: 'black',
-    alignSelf: 'center',
+    width: WIDTH(17),
+    fontSize: 12,
+    textAlign: 'center',
   },
 
   img: {
     height: HEIGHT(14),
-    width: WIDTH(20),
-    alignSelf: 'center',
-  },
-
-  imgClrChng: {
-    height: HEIGHT(14),
-    width: WIDTH(20),
+    width: WIDTH(15),
     alignSelf: 'center',
   },
 
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
+    gap: 10,
     top: HEIGHT(72),
   },
 });
