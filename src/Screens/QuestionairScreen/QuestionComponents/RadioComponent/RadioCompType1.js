@@ -23,8 +23,8 @@ const RadioCompType1 = ({
       });
     } else {
       postQuestionIdAPI(responseArray?.id, selectedButton);
-      postQuestionIdAPI(40, 150); // multiple ques
-      postQuestionIdAPI(29, 72); // drive que
+      // postQuestionIdAPI(40, 150); // multiple ques
+      // postQuestionIdAPI(29, 72); // drive que
 
       getProgress();
     }

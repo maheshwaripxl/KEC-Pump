@@ -28,6 +28,10 @@ const requestPath = {
   //post request
   postQuestionsId: 'auth/getQuestion',
 
+  // post multi options
+  PostmultiOptions: 'auth/getmultiQuestion',
+
+  // post contact info
   postContactInfo: 'auth/contact',
 };
 
@@ -41,6 +45,10 @@ const ApiManager = {
 
   postQuestionsId: params => {
     return requests.post(`${requestPath.postQuestionsId}`, params);
+  },
+
+  postmultiOptions: params => {
+    return requests.post(`${requestPath.PostmultiOptions}`, params);
   },
 
   postContactForm: params => {

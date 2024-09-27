@@ -15,9 +15,7 @@ const RadioCompType3 = ({
   postQuestionIdAPI,
 }) => {
   const [selectedButton, setSelectedButton] = useState(null);
-  // console.log('11111111111111111', APIresponse);
 
-  // console.log('APIresponse[0]?.next_question_id, selectId', APIresponse[0]?.next_question_id, selectedButton);
   const buttonFunction = () => {
     if (selectedButton == null) {
       Snackbar.show({

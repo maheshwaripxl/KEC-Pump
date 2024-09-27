@@ -17,6 +17,7 @@ import TextInputComp from './QuestionComponents/InputComponent/TextInputComp';
 import DropdownInputComp from './QuestionComponents/DropdownInputComponent/DropdownInputComp';
 import RadioCompType9 from './QuestionComponents/RadioComponent/RadioCompType9';
 import CheckboxComp from './QuestionComponents/CheckboxComponent/CheckboxComp';
+import RangeSelectComp from './QuestionComponents/RangeSelectComponent/RangeSelectComp';
 
 const QuestionmainScreen = () => {
   const [count, setCount] = useState('');
@@ -254,9 +255,21 @@ const QuestionmainScreen = () => {
             getProgress={updateProgress}
             APIresponse={response}
             answerResponse={answerResponse}
-            postQuestionIdAPI={(question_id, answer_id) =>
-              postQuestionIdAPI(question_id, answer_id)
-            }
+            // postQuestionIdAPI={(question_id, answer_id) =>
+            //   postQuestionIdAPI(question_id, answer_id)
+            // }
+          />
+        );
+
+      case 'range':
+        return (
+          <RangeSelectComp
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
           />
         );
     }

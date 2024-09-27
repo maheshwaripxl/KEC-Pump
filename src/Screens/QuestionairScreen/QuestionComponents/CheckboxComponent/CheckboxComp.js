@@ -2,23 +2,39 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import {CheckBox} from '@rneui/themed';
-import {Checkbox} from 'react-native-paper';
-import {FlatList} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CheckboxComp = ({
-  getProgress,
-  APIresponse,
-  answerResponse,
-  postQuestionIdAPI,
-}) => {
+import {FlatList} from 'react-native';
+import ApiManager from '../../../../API/Api';
+
+const CheckboxComp = ({getProgress, APIresponse, answerResponse}) => {
+  const [quesResponse, setQuesResponse] = useState([]);
+  const [ansResponse, setAnsResponse] = useState([]);
+
   const [selectedIds, setSelectedIds] = useState([]);
 
-  // console.log('APIresponse', APIresponse[0]?.next_question_id, selectedIds);
+  // Post Multi Question Id Api
+  const postMultiQuestionIdAPI = (question_id, answer_id) => {
+    const params = {
+      question_id: question_id,
+      answer_id: answer_id ? answer_id : '',
+    };
+
+    ApiManager.postQuestionsId(params)
+      .then(res => {
+        const questionResponse = res?.data?.answers;
+        const answerResponses = res?.data?.answers?.answers;
+
+        // setQuesResponse(questionResponse);
+        // setAnsResponse(answerResponses)
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   const buttonFunction = () => {
-    postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedIds);
-
+    postMultiQuestionIdAPI(APIresponse[0]?.next_question_id, selectedIds);
     getProgress();
   };
 
@@ -39,7 +55,18 @@ const CheckboxComp = ({
       <TouchableOpacity
         onPress={() => StoreIdsFunction(item?.answer_id)}
         isSelected={selectedIds === item?.answer_id}
-        style={{width: WIDTH(50)}}>
+        style={{width: WIDTH(50), flexDirection: 'row', gap: 7}}>
+        <MaterialCommunityIcons
+          name={
+            isSelected
+              ? 'checkbox-marked-circle-outline'
+              : 'checkbox-blank-circle-outline'
+          }
+          size={20}
+          style={{fontWeight: isSelected ? '500' : '300'}}
+          color={isSelected ? '#885F08' : '#fff'}
+        />
+
         <Text style={isSelected ? styles.optionTxtClrChng : styles.optionTxt}>
           {item?.answer_text}
         </Text>
@@ -54,7 +81,6 @@ const CheckboxComp = ({
           <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
         </View>
         <View style={styles.flatlistView}>
-          {/* <Checkbox checked /> */}
           <FlatList
             data={answerResponse}
             key={item => item?.answer_id}
@@ -96,7 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     fontSize: 14,
     marginBottom: 10,
-    // width: WIDTH(39),
+    textAlign: 'center',
   },
 
   optionTxtClrChng: {
@@ -104,6 +130,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     marginBottom: 10,
+    textAlign: 'center',
   },
 
   button: {

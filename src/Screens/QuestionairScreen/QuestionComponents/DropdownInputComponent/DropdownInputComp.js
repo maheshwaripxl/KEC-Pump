@@ -87,12 +87,12 @@ const DropdownInputComp = ({
                 }}
               />
             </View>
-            <TouchableOpacity style={styles.circle}>
+            {/* <TouchableOpacity style={styles.circle}>
               <Text style={{color: '#fff'}}>+</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.circle}>
               <Text style={{color: '#fff'}}>--</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
 
           <View style={styles.button}>
