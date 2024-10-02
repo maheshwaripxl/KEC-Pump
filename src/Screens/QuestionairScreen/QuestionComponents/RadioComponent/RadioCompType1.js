@@ -5,13 +5,15 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 import Snackbar from 'react-native-snackbar';
+import {useDispatch} from 'react-redux';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const RadioCompType1 = ({
-  getProgress,
   loader,
   responseArray,
   postQuestionIdAPI,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -22,11 +24,17 @@ const RadioCompType1 = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: responseArray?.id,
+          answerID: selectedButton ?? '',
+          inputData: '',
+        }),
+      );
       postQuestionIdAPI(responseArray?.id, selectedButton);
       // postQuestionIdAPI(40, 150); // multiple ques
       // postQuestionIdAPI(29, 72); // drive que
 
-      getProgress();
     }
   };
 

@@ -3,7 +3,7 @@ import {styles} from './style';
 import React, { useState } from 'react';
 
 const BackButton = ({APIresponse}) => {
-    console.log('APIresponse={APIresponse}', APIresponse[0]?.previous_id);
+    // console.log('APIresponse={APIresponse}', APIresponse[0]?.previous_id);
     const [prevId, setPrevId] = useState(null);
     
   return (

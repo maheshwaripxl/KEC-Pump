@@ -10,15 +10,21 @@ import {
 import React, {useEffect, useState} from 'react';
 import {styles} from './style';
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
 import {HEIGHT} from '../../Config/AppConst';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ApiManager from '../../API/Api';
 import {Dropdown} from 'react-native-element-dropdown';
+import {useSelector} from 'react-redux';
+import {countries} from '../../Array/CountryArray';
 
 const ContactInformation = () => {
+  const selector = useSelector(state => state.AnswerData);
   const navigation = useNavigation();
+
+  console.log('selectorcontact', selector?.responses);
 
   const [title, setTitle] = useState('');
   const [fullName, setFullName] = useState('');
@@ -29,10 +35,12 @@ const ContactInformation = () => {
   const [companyType, setCompanyType] = useState('');
   const [country, setCountry] = useState('');
   const [mobileNo, setMobileNo] = useState('');
+  const [checked, setChecked] = useState(false);
 
   const SubmitFunction = () => {
     ContactFormAPI();
     navigation.navigate('thankyouscreen');
+    console.log('0002021022');
   };
 
   const data1 = [
@@ -60,10 +68,15 @@ const ContactInformation = () => {
       company_website: companySite,
       country: country,
       mobile_no: mobileNo,
+      data: selector?.responses,
     };
+
+    console.log('params', params);
 
     ApiManager.postContactForm(params)
       .then(res => {
+        console.log('11res?.data', res?.data);
+
         if (res?.data?.status == 200) {
           console.log('log', res?.data);
         }
@@ -72,23 +85,6 @@ const ContactInformation = () => {
         console.error(error);
       });
   };
-
-  const [countries, setCountries] = useState([]);
-  console.log('countries', countries);
-
-  const fetchCountries = async () => {
-    try {
-      const response = await fetch('https://restcountries.com/v3.1/all');
-      const data = await response.json();
-      setCountries(data);
-    } catch (error) {
-      console.error('Error fetching countries:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCountries();
-  }, []);
 
   return (
     <ImageBackground
@@ -122,20 +118,18 @@ const ContactInformation = () => {
                 labelField="label"
                 valueField="value"
                 iconColor="#fff"
-                style={styles.dropdown}
-                containerStyle={styles.dropdownContainer1}
+                style={{width: 75}}
+                containerStyle={{width: 125}}
                 itemTextStyle={styles.itemText}
                 value={title}
                 onChange={item => {
                   setTitle(item.label);
                 }}
-                selectedTextStyle={styles.selectedTextStyle}
+                selectedTextStyle={styles.selectedTextStyle1}
                 placeholder="Mr"
                 placeholderStyle={styles.selectedTextStyle}
                 placeholderTextColor={'#fff'}
               />
-            </View>
-            <View style={styles.forInput}>
               <TextInput
                 placeholder="Enter your name"
                 placeholderTextColor={'#fff'}
@@ -144,6 +138,7 @@ const ContactInformation = () => {
                 onChangeText={value => setFullName(value)}
               />
             </View>
+           
           </View>
 
           <Text style={styles.textName}>Email</Text>
@@ -213,25 +208,22 @@ const ContactInformation = () => {
           </View>
 
           <Text style={styles.textName}>Your country</Text>
-          {/* <View style={styles.bgm}>
-            <TextInput
-              placeholder="India"
-              placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
-              value={country}
-              onChangeText={value => setCountry(value)}
-            />
-          </View> */}
-
-          <View style={styles.inputView2}>
-            <FlatList
+          <View style={styles.inputView}>
+            <Dropdown
               data={countries}
-              keyExtractor={item => item.cca3}
-              renderItem={({item}) => (
-                <View>
-                  <Text>{item.name.common}</Text>
-                </View>
-              )}
+              labelField="label"
+              valueField="value"
+              iconColor="#fff"
+              style={styles.dropdown}
+              value={country}
+              itemTextStyle={styles.itemText}
+              onChange={item => {
+                setCountry(item.label);
+              }}
+              selectedTextStyle={styles.selectedTextStyle}
+              placeholder="Select Country"
+              placeholderStyle={styles.selectedTextStyle}
+              placeholderTextColor={'#fff'}
             />
           </View>
 
@@ -247,9 +239,18 @@ const ContactInformation = () => {
           </View>
 
           <View style={{marginTop: 10, flexDirection: 'row'}}>
-            <TouchableOpacity>
-              <Entypo name="circle" size={20} color="#fff" />
+            <TouchableOpacity onPress={() => setChecked(true)}>
+              <MaterialCommunityIcons
+                name={
+                  checked
+                    ? 'checkbox-marked-circle-outline'
+                    : 'checkbox-blank-circle-outline'
+                }
+                size={20}
+                color={checked ? '#885F08' : '#fff'}
+              />
             </TouchableOpacity>
+
             <Text style={styles.newsletterText}>
               I would like to receive the SPAnewsletter. You can unsubscribe at
               any time.

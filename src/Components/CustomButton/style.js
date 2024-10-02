@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
 
   gradient: {
-    width: WIDTH(87),
+    width: WIDTH(85),
     height: HEIGHT(7.5),
     justifyContent: 'center',
     alignItems: 'center',
@@ -35,6 +35,25 @@ export const styles = StyleSheet.create({
   },
 
   backText: {
+    fontSize: FONTSIZE(2.1),
+    fontFamily: DM_sans_Bold,
+    textAlign: 'center',
+    color: '#fff',
+  },
+
+  skipBtn: {
+    width: WIDTH(85),
+    height: HEIGHT(7),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: '#3d3d3b',
+    padding: 15,
+    borderRadius: 10,
+  },
+
+  skipText: {
     fontSize: FONTSIZE(2.1),
     fontFamily: DM_sans_Bold,
     textAlign: 'center',

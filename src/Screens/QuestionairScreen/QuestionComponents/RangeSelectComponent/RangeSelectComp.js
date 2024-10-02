@@ -4,10 +4,15 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import React from 'react';
 import {DM_sans_Bold, HEIGHT} from '../../../../Config/AppConst';
 
-const RangeSelectComp = ({getProgress, APIresponse, answerResponse}) => {
+const RangeSelectComp = ({
+  getProgress,
+  APIresponse,
+  answerResponse,
+  postQuestionIdAPI,
+}) => {
   const buttonFunction = () => {
-    // postMultiQuestionIdAPI(APIresponse[0]?.next_question_id, selectedIds);
-    getProgress();
+    postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedIds);
+    // getProgress();
   };
 
   return (

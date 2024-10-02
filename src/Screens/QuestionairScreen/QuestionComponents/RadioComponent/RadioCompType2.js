@@ -4,6 +4,8 @@ import {DM_sans_Bold, HEIGHT} from '../../../../Config/AppConst';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType2 = ({
   loader,
@@ -11,7 +13,10 @@ const RadioCompType2 = ({
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  postMultiQuestionIdAPI,
+  handleNext,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -23,11 +28,27 @@ const RadioCompType2 = ({
       });
     } else {
       if (selectedButton == 6 || selectedButton == 7) {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // handleNext()
+        // getProgress();
       } else {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // handleNext()
+        // getProgress();
       }
     }
   };

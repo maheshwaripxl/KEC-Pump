@@ -7,13 +7,17 @@ import {
 } from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType3 = ({
   getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  handleNext,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -24,61 +28,66 @@ const RadioCompType3 = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: APIresponse[0]?.id,
+          answerID: selectedButton ?? '',
+          inputData: '',
+        }),
+      );
       postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-      getProgress();
+      // getProgress();
     }
   };
 
   return (
-    <View>
-      <View style={{marginTop: HEIGHT(10), marginHorizontal: 20}}>
-        <View>
-          <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
-        </View>
+    <View style={{marginTop: HEIGHT(10), marginHorizontal: 20}}>
+      <View>
+        <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
+      </View>
 
-        <View style={[styles.viewWrapper, {justifyContent: 'center'}]}>
-          <TouchableOpacity
+      <View style={[styles.viewWrapper, {justifyContent: 'center'}]}>
+        <TouchableOpacity
+          style={
+            selectedButton == answerResponse[0]?.answer_id
+              ? styles.yesNoBtnClrChng
+              : styles.yesNoBtn
+          }
+          isSelect={answerResponse[0]?.answer_id === selectedButton}
+          onPress={() => setSelectedButton(answerResponse[0]?.answer_id)}>
+          <Text
             style={
               selectedButton == answerResponse[0]?.answer_id
-                ? styles.yesNoBtnClrChng
-                : styles.yesNoBtn
-            }
-            isSelect={answerResponse[0]?.answer_id === selectedButton}
-            onPress={() => setSelectedButton(answerResponse[0]?.answer_id)}>
-            <Text
-              style={
-                selectedButton == answerResponse[0]?.answer_id
-                  ? styles.yesNoTxtClrChng
-                  : styles.yesNoTxt
-              }>
-              {answerResponse[0]?.answer_text}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+                ? styles.yesNoTxtClrChng
+                : styles.yesNoTxt
+            }>
+            {answerResponse[0]?.answer_text}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={
+            selectedButton == answerResponse[1]?.answer_id
+              ? styles.yesNoBtnClrChng
+              : styles.yesNoBtn
+          }
+          isSelect={answerResponse[1]?.answer_id === selectedButton}
+          onPress={() => setSelectedButton(answerResponse[1]?.answer_id)}>
+          <Text
             style={
               selectedButton == answerResponse[1]?.answer_id
-                ? styles.yesNoBtnClrChng
-                : styles.yesNoBtn
-            }
-            isSelect={answerResponse[1]?.answer_id === selectedButton}
-            onPress={() => setSelectedButton(answerResponse[1]?.answer_id)}>
-            <Text
-              style={
-                selectedButton == answerResponse[1]?.answer_id
-                  ? styles.yesNoTxtClrChng
-                  : styles.yesNoTxt
-              }>
-              {answerResponse[1]?.answer_text}
-            </Text>
-          </TouchableOpacity>
-        </View>
+                ? styles.yesNoTxtClrChng
+                : styles.yesNoTxt
+            }>
+            {answerResponse[1]?.answer_text}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-        <View style={styles.button}>
-          <CustomButton
-            btnText={APIresponse[0]?.button}
-            onpress={buttonFunction}
-          />
-        </View>
+      <View style={styles.button}>
+        <CustomButton
+          btnText={APIresponse[0]?.button}
+          onpress={buttonFunction}
+        />
       </View>
     </View>
   );

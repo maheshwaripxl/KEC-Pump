@@ -4,13 +4,17 @@ import COLOR from '../../../../Config/color.json';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import Snackbar from 'react-native-snackbar';
+import {useDispatch} from 'react-redux';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const TextInputComp = ({
   getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  handleNext,
 }) => {
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
 
   const buttonFunction = () => {
@@ -21,6 +25,13 @@ const TextInputComp = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: APIresponse[0]?.id,
+          answerID: '',
+          inputData: inputValue ?? '',
+        }),
+      );
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
       setInputValue('');
       getProgress();

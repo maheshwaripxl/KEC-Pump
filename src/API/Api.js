@@ -41,6 +41,11 @@ const ApiManager = {
     return requests.get(`${requestPath.get1stQuestion}`);
   },
 
+  getAllCountries: () => {
+    const API_URL = 'https://restcountries.com/v3.1/all';
+    return axios.get(API_URL);
+  },
+
   // Post API
 
   postQuestionsId: params => {

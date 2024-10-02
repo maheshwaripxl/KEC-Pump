@@ -14,6 +14,8 @@ import {
   HEIGHT,
   WIDTH,
 } from '../../../../Config/AppConst';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType6 = ({
   getProgress,
@@ -21,6 +23,7 @@ const RadioCompType6 = ({
   answerResponse,
   postQuestionIdAPI,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -32,11 +35,25 @@ const RadioCompType6 = ({
       });
     } else {
       if (selectedButton == answerResponse[2]?.answer_id) {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // getProgress();
       } else {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // getProgress();
       }
     }
   };

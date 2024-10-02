@@ -4,6 +4,8 @@ import {Chip} from 'react-native-paper';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType9 = ({
   getProgress,
@@ -11,6 +13,7 @@ const RadioCompType9 = ({
   answerResponse,
   postQuestionIdAPI,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -21,8 +24,15 @@ const RadioCompType9 = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: APIresponse[0]?.id,
+          answerID: selectedButton ?? '',
+          inputData: '',
+        }),
+      );
       postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-      getProgress();
+      // getProgress();
     }
   };
 

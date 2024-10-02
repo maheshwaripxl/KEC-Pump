@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType4 = ({
   getProgress,
@@ -10,6 +12,7 @@ const RadioCompType4 = ({
   answerResponse,
   postQuestionIdAPI,
 }) => {
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const buttonFunction = () => {
@@ -21,11 +24,25 @@ const RadioCompType4 = ({
       });
     } else {
       if (selectedButton == answerResponse[2]?.answer_id) {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // getProgress();
       } else {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        getProgress();
+        // getProgress();
       }
     }
   };

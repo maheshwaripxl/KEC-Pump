@@ -5,13 +5,17 @@ import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
 import Snackbar from 'react-native-snackbar';
 import BackButton from '../../../../Components/CustomButton/BackButton';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const NumberInputComp = ({
   getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  handleNext,
 }) => {
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
 
   const buttonFunction = () => {
@@ -22,7 +26,15 @@ const NumberInputComp = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: APIresponse[0]?.id,
+          answerID: '',
+          inputData: inputValue ?? '',
+        }),
+      );
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
+      // handleNext()
       setInputValue('');
       getProgress();
     }

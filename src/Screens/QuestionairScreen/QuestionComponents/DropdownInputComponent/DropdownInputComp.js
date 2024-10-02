@@ -15,13 +15,18 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
+import {useDispatch} from 'react-redux';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const DropdownInputComp = ({
   getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  handleNext,
 }) => {
+  const dispatch = useDispatch();
+
   const [inputValue, setInputValue] = useState('');
   const [selectId, setSelectId] = useState(null);
 
@@ -39,10 +44,17 @@ const DropdownInputComp = ({
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
+      dispatch(
+        AnswerDataFunction({
+          question_id: APIresponse[0]?.id,
+          answerID: selectId ?? '',
+          inputData: inputValue ?? '',
+        }),
+      );
       postQuestionIdAPI(APIresponse[0]?.next_question_id, selectId);
       setInputValue('');
       setSelectId(null);
-      getProgress();
+      // getProgress();
     }
   };
 
@@ -69,7 +81,7 @@ const DropdownInputComp = ({
                 valueField="answer_id"
                 iconColor="#fff"
                 style={styles.dropdown}
-                containerStyle={styles.dropdownContainer1}
+                containerStyle={styles.dropdownContainer}
                 itemTextStyle={styles.itemText}
                 onChange={item => {
                   setSelectId(item?.answer_id);
@@ -87,17 +99,13 @@ const DropdownInputComp = ({
                 }}
               />
             </View>
-            {/* <TouchableOpacity style={styles.circle}>
-              <Text style={{color: '#fff'}}>+</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.circle}>
-              <Text style={{color: '#fff'}}>--</Text>
-            </TouchableOpacity> */}
           </View>
 
           <View style={styles.button}>
             <CustomButton
-              btnText={APIresponse[0]?.button}
+              btnText={
+                APIresponse[0]?.button == '' ? 'Next' : APIresponse[0]?.button
+              }
               onpress={buttonFunction}
             />
           </View>
@@ -130,29 +138,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 0,
     height: 50,
-    width: WIDTH(50),
+    width: WIDTH(80),
     borderColor: '#fff',
     borderRadius: 10,
   },
 
   dropdown: {
     borderColor: '#fff',
-    fontSize: FONTSIZE(1.2),
+    fontSize: FONTSIZE(1.7),
     color: 'black',
-    width: WIDTH(22),
-    paddingLeft: 3,
+    width: WIDTH(30),
     height: 47,
     paddingRight: 3,
     borderRadius: 10,
   },
 
-  dropdownContainer1: {
-    width: 135,
-  },
-
-  dropdownContainer2: {
-    width: 135,
-    height: 170,
+  dropdownContainer: {
+    width: 105,
   },
 
   itemText: {
@@ -160,7 +162,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: WIDTH(30),
+    paddingLeft: 12,
+    width: WIDTH(48),
+    fontSize: FONTSIZE(2.5),
     color: '#fff',
   },
 
@@ -168,19 +172,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     color: '#fff',
-    fontSize: FONTSIZE(1.4),
+    // width: 60,
+    fontSize: FONTSIZE(2),
+    fontWeight: 400,
     paddingLeft: 3,
-  },
-
-  circle: {
-    borderWidth: 1,
-    padding: 0,
-    height: 50,
-    width: 50,
-    borderColor: '#fff',
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   button: {

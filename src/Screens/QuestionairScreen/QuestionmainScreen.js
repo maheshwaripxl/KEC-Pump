@@ -18,6 +18,8 @@ import DropdownInputComp from './QuestionComponents/DropdownInputComponent/Dropd
 import RadioCompType9 from './QuestionComponents/RadioComponent/RadioCompType9';
 import CheckboxComp from './QuestionComponents/CheckboxComponent/CheckboxComp';
 import RangeSelectComp from './QuestionComponents/RangeSelectComponent/RangeSelectComp';
+import TextAreaComp from './QuestionComponents/TextAreaComponent/TextAreaComp';
+import CountryComponent from './QuestionComponents/CountryComponent/CountryComponent';
 
 const QuestionmainScreen = () => {
   const [count, setCount] = useState('');
@@ -51,7 +53,7 @@ const QuestionmainScreen = () => {
   const postQuestionIdAPI = (question_id, answer_id) => {
     const params = {
       question_id: question_id,
-      answer_id: answer_id ? answer_id : '',
+      answer_id: answer_id ? answer_id : 0,
     };
 
     ApiManager.postQuestionsId(params)
@@ -255,9 +257,24 @@ const QuestionmainScreen = () => {
             getProgress={updateProgress}
             APIresponse={response}
             answerResponse={answerResponse}
-            // postQuestionIdAPI={(question_id, answer_id) =>
-            //   postQuestionIdAPI(question_id, answer_id)
-            // }
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+
+      case 'textarea':
+        return (
+          <TextAreaComp
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
           />
         );
 
@@ -270,6 +287,24 @@ const QuestionmainScreen = () => {
             getProgress={updateProgress}
             APIresponse={response}
             answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
+          />
+        );
+
+      case 'country':
+        return (
+          <CountryComponent
+            count={count}
+            setCount={setCount}
+            loader={loader}
+            getProgress={updateProgress}
+            APIresponse={response}
+            answerResponse={answerResponse}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              postQuestionIdAPI(question_id, answer_id)
+            }
           />
         );
     }
