@@ -23,11 +23,17 @@ const requests = {
 // add request path here
 const requestPath = {
   //Get request
-  get1stQuestion: 'auth/getQues',
+  get1stQuestion: 'auth/questions',
+  
+  getCountries: 'auth/countrycode',
 
   //post request
   postQuestionsId: 'auth/getQuestion',
 
+  // post multi options
+  PostmultiOptions: 'auth/getmultiQuestion',
+
+  // post contact info
   postContactInfo: 'auth/contact',
 };
 
@@ -37,10 +43,18 @@ const ApiManager = {
     return requests.get(`${requestPath.get1stQuestion}`);
   },
 
+  getAllCountries: () => {
+    return requests.get(`${requestPath.getCountries}`);
+  },
+
   // Post API
 
   postQuestionsId: params => {
     return requests.post(`${requestPath.postQuestionsId}`, params);
+  },
+
+  postmultiOptions: params => {
+    return requests.post(`${requestPath.PostmultiOptions}`, params);
   },
 
   postContactForm: params => {

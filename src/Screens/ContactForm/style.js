@@ -3,6 +3,7 @@ import {
   DM_sans_Bold,
   DM_sans_Medium,
   FONTSIZE,
+  HEIGHT,
   WIDTH,
 } from '../../Config/AppConst';
 
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
   textName: {
     color: '#fff',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 7,
     fontSize: 16,
     fontFamily: DM_sans_Medium,
   },
@@ -76,39 +77,55 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     padding: 0,
-    height: 45,
-    // width: WIDTH(50),
+    height: 50,
+    width: WIDTH(80),
     borderColor: '#fff',
     borderRadius: 10,
+    marginBottom: 4,
+  },
+
+  dropdown1: {
+    width: WIDTH(25),
   },
 
   dropdown: {
     borderColor: '#fff',
     fontSize: FONTSIZE(2),
-    color: '#fff',
-    width: WIDTH(22),
-    paddingLeft: 3,
+    color: 'black',
+    width: WIDTH(75),
     height: 47,
     paddingRight: 3,
     borderRadius: 10,
   },
 
   dropdownContainer1: {
-    width: 135,
+    width: 45,
   },
 
-  dropdownContainer2: {
-    width: WIDTH(83),
-    height: 170,
+  dropdownContainer: {
+    width: 105,
   },
 
   itemText: {
     fontSize: 14,
+    color: 'black'
   },
 
   input: {
-    width: WIDTH(30),
+    paddingLeft: 12,
+    width: WIDTH(80),
+    fontSize: FONTSIZE(2),
     color: '#fff',
+  },
+
+  selectedTextStyle: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    color: '#fff',
+    // width: 60,
+    fontSize: FONTSIZE(2),
+    fontWeight: 400,
+    paddingLeft: 3,
   },
 
   inputView2: {
@@ -137,7 +154,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     color: '#fff',
-    fontSize: FONTSIZE(1.4),
+    fontSize: FONTSIZE(2),
     paddingLeft: 3,
+  },
+
+  placeholderStyle: {
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'center',
   },
 });

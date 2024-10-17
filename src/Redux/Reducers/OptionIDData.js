@@ -1,8 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  answerID: '',
-  // answerIDforQues4: ''
+  responses: [],
 };
 
 const AnswerData = createSlice({
@@ -10,13 +9,15 @@ const AnswerData = createSlice({
   initialState,
   reducers: {
     AnswerDataFunction(state, action) {
-      return {
+      // Push new data (question_id, answerID, and inputData) into the array
+      state.responses.push({
+        question_id: action.payload.question_id,
         answerID: action.payload.answerID,
-        // answerIDforQues4: action.payload.answerIDforQues4
-      };
+        inputData: action.payload.inputData,
+      });
     },
   },
 });
 
-export const { AnswerDataFunction } = AnswerData.actions;
+export const {AnswerDataFunction} = AnswerData.actions;
 export default AnswerData.reducer;

@@ -10,14 +10,17 @@ import {
 import React, {useEffect, useState} from 'react';
 import {styles} from './style';
 import CustomButton from '../../Components/CustomButton/CustomButton';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
-import {HEIGHT} from '../../Config/AppConst';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {HEIGHT, WIDTH} from '../../Config/AppConst';
 import ApiManager from '../../API/Api';
 import {Dropdown} from 'react-native-element-dropdown';
+import {useSelector} from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 
 const ContactInformation = () => {
+  const selector = useSelector(state => state.AnswerData);
   const navigation = useNavigation();
 
   const [title, setTitle] = useState('');
@@ -25,14 +28,132 @@ const ContactInformation = () => {
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [companySite, setCompanySite] = useState('');
+  const [url, setUrl] = useState('');
   const [companyType, setCompanyType] = useState('');
-  const [country, setCountry] = useState('');
-  const [mobileNo, setMobileNo] = useState('');
+  const [country, setCountry] = useState([]);
+  const [countryTitle, setCountryTitle] = useState('');
+  const [mobileNo, setMobileNo] = useState(null);
+
+  const [nameError, setnameError] = useState(false);
+  const [emailError, setemailError] = useState(false);
+  const [numberError, setnumberError] = useState(false);
+  const [selectcountry, setSelectCountry] = useState(false);
+
+  const [isValid, setIsValid] = useState(null);
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    getContriesAPI();
+  }, []);
+
+  const getContriesAPI = async () => {
+    ApiManager.getAllCountries()
+      .then(res => {
+        setCountry(res?.data?.response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const nameOnChange = text => {
+    setnameError(false);
+    const formattedName = text.replace(/\s/g, '');
+
+    if (text.length === 1 && text.trim() === '') {
+      setFullName(formattedName);
+    } else {
+      setFullName(text);
+    }
+  };
+
+  const emailOnChange = text => {
+    setemailError(false);
+    const formattedEmail = text.replace(/\s/g, '');
+    setEmail(formattedEmail);
+  };
+
+  var nameRegex = /^[^\s]+$/;
+  var isNameValid = nameRegex.test(fullName);
+
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var isEmailValid = emailRegex.test(email);
+
+  const nameValidationFunction = () => {
+    if (fullName.length > 0 && fullName.length < 3 && isNameValid) {
+      setnameError(true);
+    }
+  };
+
+  const emailValidationFunction = () => {
+    if (email.length > 0 && !isEmailValid) {
+      setemailError(true);
+    }
+  };
+
+  const validateUrl = () => {
+    const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/[^\s]*)?$/i;
+    setIsValid(urlPattern.test(url));
+  };
+
+  const onChangeNumber = inputValue => {
+    var phoneRegex = /^\d{11}$/;
+    var isValidNumber = phoneRegex.test(mobileNo);
+
+    if (!isValidNumber) {
+      setMobileNo(inputValue);
+      setnumberError(true);
+    } else {
+      setnumberError(false);
+    }
+  };
 
   const SubmitFunction = () => {
-    ContactFormAPI();
-    navigation.navigate('thankyouscreen');
+    if (fullName == '') {
+      Snackbar.show({
+        text: 'Please enter your name',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (email == '') {
+      Snackbar.show({
+        text: 'Please enter your email',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (confirmEmail == '') {
+      Snackbar.show({
+        text: 'Please enter your confirmEmail',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (companyName == '') {
+      Snackbar.show({
+        text: 'Please enter your company name',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (url == '') {
+      Snackbar.show({
+        text: 'Please enter your company website',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (selectcountry) {
+      Snackbar.show({
+        text: 'Please select your country',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (mobileNo === null) {
+      Snackbar.show({
+        text: 'Please enter your phone number',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      ContactFormAPI();
+    }
   };
 
   const data1 = [
@@ -52,43 +173,30 @@ const ContactInformation = () => {
   const ContactFormAPI = async () => {
     const params = {
       title: title,
-      fullname: fullName,
-      email: email,
+      username: fullName,
+      user_email: email,
       repeat_email: confirmEmail,
       company_name: companyName,
       company_type: companyType,
-      company_website: companySite,
-      country: country,
+      company_website: url,
+      country: countryTitle,
       mobile_no: mobileNo,
+      data: selector?.responses,
     };
+
+    console.log('params', params);
 
     ApiManager.postContactForm(params)
       .then(res => {
         if (res?.data?.status == 200) {
           console.log('log', res?.data);
+          navigation.navigate('thankyouscreen');
         }
       })
       .catch(error => {
         console.error(error);
       });
   };
-
-  const [countries, setCountries] = useState([]);
-  console.log('countries', countries);
-
-  const fetchCountries = async () => {
-    try {
-      const response = await fetch('https://restcountries.com/v3.1/all');
-      const data = await response.json();
-      setCountries(data);
-    } catch (error) {
-      console.error('Error fetching countries:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCountries();
-  }, []);
 
   return (
     <ImageBackground
@@ -122,73 +230,99 @@ const ContactInformation = () => {
                 labelField="label"
                 valueField="value"
                 iconColor="#fff"
-                style={styles.dropdown}
-                containerStyle={styles.dropdownContainer1}
+                style={{width: 80, justifyContent: 'center'}}
+                containerStyle={{width: 80, marginTop: 16}}
                 itemTextStyle={styles.itemText}
                 value={title}
                 onChange={item => {
                   setTitle(item.label);
                 }}
-                selectedTextStyle={styles.selectedTextStyle}
                 placeholder="Mr"
-                placeholderStyle={styles.selectedTextStyle}
+                // selectedTextStyle={styles.selectedTextStyle1}
+                placeholderStyle={styles.placeholderStyle}
                 placeholderTextColor={'#fff'}
               />
-            </View>
-            <View style={styles.forInput}>
               <TextInput
                 placeholder="Enter your name"
                 placeholderTextColor={'#fff'}
-                style={{color: '#fff'}}
+                style={[styles.input, {width: WIDTH(48)}]}
                 value={fullName}
-                onChangeText={value => setFullName(value)}
+                onChangeText={txt => nameOnChange(txt)}
+                onBlur={nameValidationFunction}
               />
             </View>
           </View>
+
+          {nameError ? (
+            <Text style={{color: 'red'}}>
+              Enter atleast 3 characters for name
+            </Text>
+          ) : null}
 
           <Text style={styles.textName}>Email</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter email"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={email}
-              onChangeText={value => setEmail(value)}
+              onChangeText={value => emailOnChange(value)}
+              onBlur={emailValidationFunction}
             />
           </View>
+
+          {emailError ? (
+            <Text style={{color: 'red'}}>Enter valid email</Text>
+          ) : null}
 
           <Text style={styles.textName}>Confirm your email</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Re-enter email"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={confirmEmail}
               onChangeText={value => setConfirmEmail(value)}
             />
           </View>
+          {confirmEmail.length > 0 && email !== confirmEmail ? (
+            <Text style={{color: 'red'}}>
+              email and confirmEmail doesn't match
+            </Text>
+          ) : null}
 
-          <Text style={styles.textName}>Full company name</Text>
+          <Text style={styles.textName}>company name</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter company name"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={companyName}
               onChangeText={value => setCompanyName(value)}
             />
           </View>
+
+          {nameError ? (
+            <Text style={{color: 'red'}}>Enter your for companyName</Text>
+          ) : null}
 
           <Text style={styles.textName}>Company website</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter website"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
-              value={companySite}
-              onChangeText={value => setCompanySite(value)}
+              style={styles.input}
+              value={url}
+              onChangeText={value => setUrl(value)}
+              onBlur={validateUrl}
             />
           </View>
+
+          {!isValid && url.length > 0 ? (
+            <Text style={{marginTop: 10, color: 'red'}}>
+              {isValid ? 'Valid URL!' : 'Invalid URL!'}
+            </Text>
+          ) : null}
 
           <Text style={styles.textName}>Company type</Text>
           <View style={styles.inputView2}>
@@ -199,7 +333,7 @@ const ContactInformation = () => {
               valueField="value"
               iconColor="#fff"
               style={styles.dropdown2}
-              containerStyle={styles.dropdownContainer2}
+              // containerStyle={styles.dropdownContainer2}
               itemTextStyle={styles.itemText}
               value={companyType}
               onChange={item => {
@@ -207,49 +341,62 @@ const ContactInformation = () => {
               }}
               selectedTextStyle={styles.selectedTextStyle}
               placeholder="Merchant"
-              placeholderStyle={styles.selectedTextStyle}
+              placeholderStyle={styles.placeholderStyle}
               placeholderTextColor={'#fff'}
             />
           </View>
 
           <Text style={styles.textName}>Your country</Text>
-          {/* <View style={styles.bgm}>
-            <TextInput
-              placeholder="India"
-              placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+          <View style={styles.inputView}>
+            <Dropdown
+              data={country}
+              labelField="country"
+              valueField="countryid"
+              iconColor="#fff"
+              style={styles.dropdown}
               value={country}
-              onChangeText={value => setCountry(value)}
-            />
-          </View> */}
-
-          <View style={styles.inputView2}>
-            <FlatList
-              data={countries}
-              keyExtractor={item => item.cca3}
-              renderItem={({item}) => (
-                <View>
-                  <Text>{item.name.common}</Text>
-                </View>
-              )}
+              itemTextStyle={styles.itemText}
+              onChange={item => {
+                setCountryTitle(item?.country), setSelectCountry(false);
+              }}
+              selectedTextStyle={styles.selectedTextStyle}
+              // placeholder="Select Country"
+              placeholderStyle={styles.placeholderStyle}
+              placeholderTextColor={'#fff'}
             />
           </View>
+
+          {/* {!country ? <Text style={{color: 'red'}}>Select country</Text> : null} */}
 
           <Text style={styles.textName}>Phone number</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder=""
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              keyboardType="numeric"
+              style={styles.input}
               value={mobileNo}
-              onChangeText={value => setMobileNo(value)}
+              onChangeText={value => onChangeNumber(value)}
             />
           </View>
 
+          {/* {numberError ? (
+            <Text style={{color: 'red'}}>Enter your phone number</Text>
+          ) : null} */}
+
           <View style={{marginTop: 10, flexDirection: 'row'}}>
-            <TouchableOpacity>
-              <Entypo name="circle" size={20} color="#fff" />
+            <TouchableOpacity onPress={() => setChecked(true)}>
+              <MaterialCommunityIcons
+                name={
+                  checked
+                    ? 'checkbox-marked-circle-outline'
+                    : 'checkbox-blank-circle-outline'
+                }
+                size={20}
+                color={checked ? '#885F08' : '#fff'}
+              />
             </TouchableOpacity>
+
             <Text style={styles.newsletterText}>
               I would like to receive the SPAnewsletter. You can unsubscribe at
               any time.

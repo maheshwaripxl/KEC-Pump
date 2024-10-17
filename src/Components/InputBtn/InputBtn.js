@@ -1,25 +1,25 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { DM_sans_Medium } from '../../Config/AppConst';
 
-const InputBtn = ({title, isSelected, onPress }) => {
+const InputBtn = ({ title, isSelected, onPress }) => {
   return (
-      <TouchableOpacity onPress={onPress} style={[styles.view1, isSelected && styles.selected]}>
-        <Text  style={[styles.textStyle1, isSelected && styles.selectedText]}>{title}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity onPress={onPress} style={[styles.button, isSelected && styles.selected]}>
+      <Text style={[styles.textStyle1, isSelected && styles.selectedText]}>{title}</Text>
+    </TouchableOpacity>
   );
 };
 
 export default InputBtn;
 
 const styles = StyleSheet.create({
-  view1: {
+  button: {
     borderWidth: 1,
     borderColor: '#fff',
     padding: 10,
     borderRadius: 23,
-    marginBottom:10,
-    marginTop:10
+    marginBottom: 10,
+    marginTop: 10
   },
 
   textStyle1: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   selected: {
     backgroundColor: '#fff',
   },
-  
+
   selectedText: {
     color: 'black',
   },

@@ -1,47 +1,50 @@
-import { Text, ActivityIndicator, View, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { DM_sans_Bold, HEIGHT } from '../../../../Config/AppConst';
+import {Text, ActivityIndicator, View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {DM_sans_Bold, HEIGHT} from '../../../../Config/AppConst';
 import InputBtn from '../../../../Components/InputBtn/InputBtn';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
 import Snackbar from 'react-native-snackbar';
-import { useDispatch } from 'react-redux';
-import { AnswerDataFunction } from '../../../../Redux/Reducers/OptionIDData';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
+import {useDispatch} from 'react-redux';
 
 const RadioCompType2 = ({
-  count,
-  setCount,
   loader,
-  getProgress,
   APIresponse,
+  answerResponse,
   postQuestionIdAPI,
+  NextBtn,
 }) => {
-
-  const dispatch = useDispatch()
-
-  // console.log('APIresponse?.question', APIresponse?.question);
-
+  const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
 
-  console.log('selectedButton', selectedButton);
-
   const buttonFunction = () => {
-    if (selectedButton == '') {
+    if (selectedButton == null) {
       Snackbar.show({
         text: 'Select atleast one option',
         backgroundColor: '#D1264A',
         duration: Snackbar.LENGTH_SHORT,
       });
     } else {
-      if (selectedButton == 6 && selectedButton == 7) {
-        setCount(6)
-        getProgress();
-        // dispatch(AnswerDataFunction({ answerID: selectedButton }))
-        postQuestionIdAPI(13, selectedButton)
+      if (selectedButton == 6 || selectedButton == 7) {
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
+        postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
+        // handleNext()
+        // getProgress();
       } else {
-        setCount(5);
-        getProgress()
-        // dispatch(AnswerDataFunction({ answerID: selectedButton }))
-        postQuestionIdAPI(5, selectedButton)
+        dispatch(
+          AnswerDataFunction({
+            question_id: APIresponse[0]?.id,
+            answerID: selectedButton ?? '',
+            inputData: '',
+          }),
+        );
+        postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
       }
     }
   };
@@ -55,59 +58,55 @@ const RadioCompType2 = ({
           style={styles.loader}
         />
       ) : (
-        <View style={{ marginHorizontal: 30 }}>
-          <Text style={{ color: '#fff', position: 'absolute', right: 1 }}>
+        <View style={{marginHorizontal: 30}}>
+          {/* <Text style={{color: '#fff', position: 'absolute', right: 1}}>
             {count}/15
-          </Text>
-          <View style={{ marginTop: HEIGHT(16) }}>
+          </Text> */}
+          <View style={{marginTop: HEIGHT(16)}}>
             <View>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontWeight: '500',
-                  fontSize: 16,
-                  fontFamily: DM_sans_Bold,
-                }}>
-                {APIresponse?.question?.question_text}
+              <Text style={styles.mainTitle}>
+                {APIresponse[0]?.question_text}
               </Text>
             </View>
-            <View style={{ marginTop: 10 }}>
+            <View style={{marginTop: 10}}>
               <InputBtn
-                title={APIresponse?.answers?.[0]?.answer_text}
-                isSelected={APIresponse?.answers?.answer_id === 4}
+                title={answerResponse[0]?.answer_text}
+                isSelected={answerResponse[0]?.answer_id === selectedButton}
                 onPress={() => {
-                  setSelectedButton(4);
+                  setSelectedButton(answerResponse[0]?.answer_id);
                 }}
               />
               <InputBtn
-                title={APIresponse?.answers?.[1]?.answer_text}
-                isSelected={APIresponse?.answers?.answer_id === 5}
+                title={answerResponse[1]?.answer_text}
+                isSelected={answerResponse[1]?.answer_id === selectedButton}
                 onPress={() => {
-                  setSelectedButton(5);
+                  setSelectedButton(answerResponse[1]?.answer_id);
                 }}
               />
               <InputBtn
-                title={APIresponse?.answers?.[2]?.answer_text}
-                isSelected={APIresponse?.answers?.answer_id === 6}
+                title={answerResponse[2]?.answer_text}
+                isSelected={answerResponse[2]?.answer_id === selectedButton}
                 onPress={() => {
-                  setSelectedButton(6);
+                  setSelectedButton(answerResponse[2]?.answer_id);
                 }}
               />
               <InputBtn
-                title={APIresponse?.answers?.[3]?.answer_text}
-                isSelected={APIresponse?.answers?.answer_id === 7}
+                title={answerResponse[3]?.answer_text}
+                isSelected={answerResponse[3]?.answer_id === selectedButton}
                 onPress={() => {
-                  setSelectedButton(7);
+                  setSelectedButton(answerResponse[3]?.answer_id);
                 }}
               />
             </View>
 
-            <View
-              style={{
-                position: 'absolute',
-                top: HEIGHT(61),
-              }}>
-              {selectedButton === 4 || selectedButton === 5 ? (
+            <View style={styles.button}>
+              {NextBtn ? (
+                <CustomButton
+                  btnText={NextBtn}
+                  onpress={() => buttonFunction()}
+                />
+              ) : selectedButton == answerResponse[0]?.answer_id ||
+                selectedButton == answerResponse[1]?.answer_id ? (
                 <CustomButton
                   btnText="GO TO VISCOSITY"
                   onpress={() => buttonFunction()}
@@ -128,4 +127,20 @@ const RadioCompType2 = ({
 
 export default RadioCompType2;
 
-export const styles = StyleSheet.create({});
+export const styles = StyleSheet.create({
+  mainTitle: {
+    color: '#fff',
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: DM_sans_Bold,
+  },
+
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    top: HEIGHT(61),
+    gap: 10,
+  },
+});
