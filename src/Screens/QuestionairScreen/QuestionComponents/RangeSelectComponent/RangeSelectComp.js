@@ -1,8 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
-import RangeSlider from 'react-native-range-slider';
+import RangeSlider from 'rn-range-slider';
 import CustomButton from '../../../../Components/CustomButton/CustomButton';
-import React from 'react';
-import {DM_sans_Bold, HEIGHT} from '../../../../Config/AppConst';
+import React, {useState} from 'react';
+import {DM_sans_Bold, HEIGHT, WIDTH} from '../../../../Config/AppConst';
+import {useDispatch} from 'react-redux';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const RangeSelectComp = ({
   getProgress,
@@ -10,31 +12,59 @@ const RangeSelectComp = ({
   answerResponse,
   postQuestionIdAPI,
 }) => {
+  const dispatch = useDispatch();
+  const [lowValue, setLowValue] = useState(-100);
+  const [highValue, setHighValue] = useState(100);
+  const rangeValue = [lowValue, highValue];
+
   const buttonFunction = () => {
-    postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedIds);
+    dispatch(
+      AnswerDataFunction({
+        question_id: APIresponse[0]?.id,
+        answerID: rangeValue,
+        inputData: '',
+      }),
+    );
+    postQuestionIdAPI(APIresponse[0]?.next_question_id);
     // getProgress();
   };
 
+  const renderThumb = () => <View style={styles.thumb} />;
+  const renderRail = () => <View style={styles.rail} />;
+  const renderRailSelected = () => <View style={styles.railSelected} />;
+  const renderLabel = value => <Text style={styles.labelText}>{value}</Text>;
+
   return (
-    <View>
-      <Text style={styles.mainTitle}>RangeSelectComp</Text>
-      <RangeSlider
-        minValue={-100}
-        maxValue={100}
-        tintColor={'#885F08'}
-        handleBorderWidth={1}
-        handleBorderColor="#454d55"
-        selectedMinimum={-10}
-        selectedMaximum={10}
-        style={{flex: 1, height: 70, padding: 10, backgroundColor: '#ddd'}}
-        // onChange={data => {
-        //   console.log(data);
-        // }}
-      />
+    <View style={styles.container}>
+      <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
+
+      <View style={styles.rangeContainer}>
+        <Text style={styles.valueText}>{lowValue}</Text>
+
+        <RangeSlider
+          style={{flex: 1}}
+          min={-100}
+          max={100}
+          step={1}
+          floatingLabel
+          low={lowValue}
+          high={highValue}
+          renderThumb={renderThumb}
+          renderRail={renderRail}
+          renderRailSelected={renderRailSelected}
+          renderLabel={renderLabel}
+          onValueChanged={(low, high) => {
+            setLowValue(low);
+            setHighValue(high);
+          }}
+        />
+
+        <Text style={styles.valueText}>{highValue}</Text>
+      </View>
 
       <View style={styles.button}>
         <CustomButton
-          // btnText={APIresponse[0]?.button}
+          btnText={APIresponse[0]?.nextButton}
           onpress={() => buttonFunction()}
         />
       </View>
@@ -52,12 +82,58 @@ const styles = StyleSheet.create({
     fontFamily: DM_sans_Bold,
   },
 
+  container: {
+    flex: 1,
+
+    paddingVertical: HEIGHT(5),
+    paddingHorizontal: WIDTH(6),
+  },
+
+  rangeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: HEIGHT(24),
+  },
+  valueText: {
+    fontSize: 16,
+    width: 35,
+    textAlign: 'center',
+    color: '#fff',
+  },
+  thumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#c79500',
+  },
+  rail: {
+    flex: 1,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#d3d3d3',
+  },
+  railSelected: {
+    height: 4,
+    backgroundColor: '#c79500',
+    borderRadius: 2,
+  },
+  labelText: {
+    fontSize: 12,
+    color: '#c79500',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+
   button: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
     top: HEIGHT(78),
+    left: WIDTH(7),
     gap: 10,
   },
 });

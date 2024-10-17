@@ -69,7 +69,7 @@ const RadioCompType7 = ({
     );
   };
   return (
-    <View style={{flex: 1, marginHorizontal: 11}}>
+    <View style={{flex: 1, marginHorizontal: 16}}>
       <View style={{marginTop: HEIGHT(7)}}>
         <Text style={styles.mainTitle}>{APIresponse[0]?.question_text}</Text>
 
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
   Txt: {
     color: 'black',
     alignSelf: 'center',
-    fontSize: 11,
+    fontSize: 12,
   },
 
   TxtClrChng: {
     color: '#fff',
     alignSelf: 'center',
-    fontSize: 11,
+    fontSize: 12,
   },
 
   button: {
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    gap: 10,
     top: HEIGHT(72),
+    left: WIDTH(2.8),
+    gap: 10,
   },
 });

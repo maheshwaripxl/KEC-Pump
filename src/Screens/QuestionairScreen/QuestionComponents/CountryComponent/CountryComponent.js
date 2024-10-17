@@ -65,10 +65,10 @@ const CountryComponent = ({APIresponse}) => {
           valueField="countryid"
           iconColor="#fff"
           style={styles.dropdown}
-          value={title}
+          value={countries}
           itemTextStyle={styles.itemText}
           onChange={item => {
-            setTitle(item.label);
+            setTitle(item?.country);
           }}
           selectedTextStyle={styles.selectedTextStyle}
           placeholder="Select Country"

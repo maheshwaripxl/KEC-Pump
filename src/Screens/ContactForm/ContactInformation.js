@@ -14,18 +14,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
 import {HEIGHT, WIDTH} from '../../Config/AppConst';
-import Entypo from 'react-native-vector-icons/Entypo';
 import ApiManager from '../../API/Api';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector} from 'react-redux';
-import {countries} from '../../Array/CountryArray';
 import Snackbar from 'react-native-snackbar';
 
 const ContactInformation = () => {
   const selector = useSelector(state => state.AnswerData);
   const navigation = useNavigation();
-
-  console.log('selectorcontact', selector?.responses);
 
   const [title, setTitle] = useState('');
   const [fullName, setFullName] = useState('');
@@ -35,7 +31,8 @@ const ContactInformation = () => {
   const [url, setUrl] = useState('');
   const [companyType, setCompanyType] = useState('');
   const [country, setCountry] = useState([]);
-  const [mobileNo, setMobileNo] = useState('');
+  const [countryTitle, setCountryTitle] = useState('');
+  const [mobileNo, setMobileNo] = useState(null);
 
   const [nameError, setnameError] = useState(false);
   const [emailError, setemailError] = useState(false);
@@ -48,6 +45,16 @@ const ContactInformation = () => {
   useEffect(() => {
     getContriesAPI();
   }, []);
+
+  const getContriesAPI = async () => {
+    ApiManager.getAllCountries()
+      .then(res => {
+        setCountry(res?.data?.response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const nameOnChange = text => {
     setnameError(false);
@@ -90,17 +97,15 @@ const ContactInformation = () => {
   };
 
   const onChangeNumber = inputValue => {
-    var phoneRegex = /^((\+|00)968)?\d{8}$/;
+    var phoneRegex = /^\d{11}$/;
     var isValidNumber = phoneRegex.test(mobileNo);
 
-    const formattedEmail = inputValue.replace(/\s/g, '');
-
     if (!isValidNumber) {
+      setMobileNo(inputValue);
       setnumberError(true);
     } else {
       setnumberError(false);
     }
-    setMobileNo(formattedEmail);
   };
 
   const SubmitFunction = () => {
@@ -165,16 +170,6 @@ const ContactInformation = () => {
     {label: 'Private / Others', value: '5'},
   ];
 
-  const getContriesAPI = async () => {
-    ApiManager.getAllCountries()
-      .then(res => {
-        setCountry(res?.data?.response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   const ContactFormAPI = async () => {
     const params = {
       title: title,
@@ -184,7 +179,7 @@ const ContactInformation = () => {
       company_name: companyName,
       company_type: companyType,
       company_website: url,
-      country: country,
+      country: countryTitle,
       mobile_no: mobileNo,
       data: selector?.responses,
     };
@@ -243,7 +238,7 @@ const ContactInformation = () => {
                   setTitle(item.label);
                 }}
                 placeholder="Mr"
-                selectedTextStyle={styles.selectedTextStyle1}
+                // selectedTextStyle={styles.selectedTextStyle1}
                 placeholderStyle={styles.placeholderStyle}
                 placeholderTextColor={'#fff'}
               />
@@ -362,7 +357,7 @@ const ContactInformation = () => {
               value={country}
               itemTextStyle={styles.itemText}
               onChange={item => {
-                setCountry(item.label), setSelectCountry(false);
+                setCountryTitle(item?.country), setSelectCountry(false);
               }}
               selectedTextStyle={styles.selectedTextStyle}
               // placeholder="Select Country"
@@ -385,9 +380,9 @@ const ContactInformation = () => {
             />
           </View>
 
-          {numberError ? (
-            <Text style={{color: 'red'}}>Enter your phonr number</Text>
-          ) : null}
+          {/* {numberError ? (
+            <Text style={{color: 'red'}}>Enter your phone number</Text>
+          ) : null} */}
 
           <View style={{marginTop: 10, flexDirection: 'row'}}>
             <TouchableOpacity onPress={() => setChecked(true)}>

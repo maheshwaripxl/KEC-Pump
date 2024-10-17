@@ -94,7 +94,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             responseArray={[item]}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -106,7 +106,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -120,7 +120,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             setCount={setCount}
             APIresponse={[item]}
             answerResponse={[item?.answers]}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -134,7 +134,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             setCount={setCount}
             APIresponse={[item]}
             answerResponse={[item?.answers]}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -148,7 +148,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={item?.answers}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -161,9 +161,9 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            answerResponse={[item?.answers]}
+            answerResponse={item?.answers}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -178,7 +178,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -193,7 +193,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -208,7 +208,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -220,9 +220,9 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            answerResponse={[item?.answers]}
+            answerResponse={item?.answers}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -234,9 +234,9 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            answerResponse={[item?.answers]}
+            answerResponse={item?.answers}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -248,9 +248,9 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            answerResponse={[item?.answers]}
+            answerResponse={item?.answers}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -265,7 +265,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -280,7 +280,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -295,7 +295,7 @@ const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
-            NextBtn={quesResponse?.nextButton}
+            NextBtn={quesResponse[0]?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }

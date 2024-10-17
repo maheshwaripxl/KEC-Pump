@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 0,
     height: 50,
-    width: WIDTH(80),
+    width: WIDTH(88),
     borderColor: '#fff',
     borderRadius: 10,
   },
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   dropdown: {
     borderColor: '#fff',
     fontSize: FONTSIZE(1.7),
+    left: 7,
     color: 'black',
     width: WIDTH(30),
     height: 47,
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   dropdownContainer: {
-    width: 105,
+    width: 75,
   },
 
   itemText: {
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
 
   input: {
     paddingLeft: 12,
-    width: WIDTH(48),
+    width: WIDTH(62),
     fontSize: FONTSIZE(2.5),
     color: '#fff',
   },

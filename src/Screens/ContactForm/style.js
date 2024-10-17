@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   textName: {
     color: '#fff',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 7,
     fontSize: 16,
     fontFamily: DM_sans_Medium,
   },
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     width: WIDTH(80),
     borderColor: '#fff',
     borderRadius: 10,
-    // marginTop: HEIGHT(4),
+    marginBottom: 4,
   },
 
   dropdown1: {
@@ -90,7 +90,7 @@ export const styles = StyleSheet.create({
 
   dropdown: {
     borderColor: '#fff',
-    fontSize: FONTSIZE(1.7),
+    fontSize: FONTSIZE(2),
     color: 'black',
     width: WIDTH(75),
     height: 47,
@@ -99,24 +99,22 @@ export const styles = StyleSheet.create({
   },
 
   dropdownContainer1: {
-    width: 45
+    width: 45,
   },
 
-  selectedTextStyle1: {
-
-  },
   dropdownContainer: {
     width: 105,
   },
 
   itemText: {
     fontSize: 14,
+    color: 'black'
   },
 
   input: {
     paddingLeft: 12,
     width: WIDTH(80),
-    fontSize: FONTSIZE(2.5),
+    fontSize: FONTSIZE(2),
     color: '#fff',
   },
 
@@ -156,11 +154,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     color: '#fff',
-    fontSize: FONTSIZE(1.4),
+    fontSize: FONTSIZE(2),
     paddingLeft: 3,
   },
 
   placeholderStyle: {
-    fontSize: 16, color: '#fff', textAlign: 'center'
-  }
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'center',
+  },
 });
