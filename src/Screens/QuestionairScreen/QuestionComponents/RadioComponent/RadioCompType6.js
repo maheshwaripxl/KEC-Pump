@@ -18,10 +18,10 @@ import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 import {useDispatch} from 'react-redux';
 
 const RadioCompType6 = ({
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -43,7 +43,6 @@ const RadioCompType6 = ({
           }),
         );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        // getProgress();
       } else {
         dispatch(
           AnswerDataFunction({
@@ -53,7 +52,6 @@ const RadioCompType6 = ({
           }),
         );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        // getProgress();
       }
     }
   };
@@ -95,7 +93,9 @@ const RadioCompType6 = ({
         </View>
 
         <View style={styles.button}>
-          {selectedButton == answerResponse[1]?.answer_id ? (
+          {NextBtn ? (
+            <CustomButton btnText={NextBtn} onpress={() => buttonFunction()} />
+          ) : selectedButton == answerResponse[1]?.answer_id ? (
             <CustomButton
               btnText="GO TO IMMERSION DEPTH"
               onpress={() => buttonFunction()}

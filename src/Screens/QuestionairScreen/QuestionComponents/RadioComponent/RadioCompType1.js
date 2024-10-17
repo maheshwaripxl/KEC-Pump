@@ -12,6 +12,7 @@ const RadioCompType1 = ({
   loader,
   responseArray,
   postQuestionIdAPI,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -34,7 +35,6 @@ const RadioCompType1 = ({
       postQuestionIdAPI(responseArray?.id, selectedButton);
       // postQuestionIdAPI(40, 150); // multiple ques
       // postQuestionIdAPI(29, 72); // drive que
-
     }
   };
 
@@ -97,10 +97,17 @@ const RadioCompType1 = ({
             </View>
 
             <View style={styles.button}>
-              <CustomButton
-                btnText="GO TO REQUIRED QUANTITY"
-                onpress={() => buttonFunction()}
-              />
+              {NextBtn ? (
+                <CustomButton
+                  btnText={NextBtn}
+                  onpress={() => buttonFunction()}
+                />
+              ) : (
+                <CustomButton
+                  btnText="GO TO REQUIRED QUANTITY"
+                  onpress={() => buttonFunction()}
+                />
+              )}
             </View>
           </View>
         </View>

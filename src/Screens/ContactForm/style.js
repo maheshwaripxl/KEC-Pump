@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     width: WIDTH(80),
     borderColor: '#fff',
     borderRadius: 10,
-    marginTop: HEIGHT(4),
+    // marginTop: HEIGHT(4),
   },
 
   dropdown1: {
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
 
   input: {
     paddingLeft: 12,
-    width: WIDTH(48),
+    width: WIDTH(80),
     fontSize: FONTSIZE(2.5),
     color: '#fff',
   },
@@ -159,4 +159,8 @@ export const styles = StyleSheet.create({
     fontSize: FONTSIZE(1.4),
     paddingLeft: 3,
   },
+
+  placeholderStyle: {
+    fontSize: 16, color: '#fff', textAlign: 'center'
+  }
 });

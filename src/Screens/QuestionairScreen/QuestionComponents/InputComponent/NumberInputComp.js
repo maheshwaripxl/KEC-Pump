@@ -9,11 +9,10 @@ import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 import {useDispatch} from 'react-redux';
 
 const NumberInputComp = ({
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
-  handleNext,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
@@ -34,9 +33,7 @@ const NumberInputComp = ({
         }),
       );
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
-      // handleNext()
       setInputValue('');
-      getProgress();
     }
   };
 
@@ -63,10 +60,17 @@ const NumberInputComp = ({
 
           <View style={styles.button}>
             {/* <BackButton APIresponse={APIresponse} /> */}
-            <CustomButton
-              btnText={APIresponse[0]?.button}
-              onpress={buttonFunction}
-            />
+            {NextBtn ? (
+              <CustomButton
+                btnText={NextBtn}
+                onpress={() => buttonFunction()}
+              />
+            ) : (
+              <CustomButton
+                btnText={APIresponse[0]?.button}
+                onpress={buttonFunction}
+              />
+            )}
           </View>
         </View>
       </View>

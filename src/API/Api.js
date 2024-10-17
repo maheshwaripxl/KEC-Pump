@@ -24,6 +24,8 @@ const requests = {
 const requestPath = {
   //Get request
   get1stQuestion: 'auth/questions',
+  
+  getCountries: 'auth/countrycode',
 
   //post request
   postQuestionsId: 'auth/getQuestion',
@@ -42,8 +44,7 @@ const ApiManager = {
   },
 
   getAllCountries: () => {
-    const API_URL = 'https://restcountries.com/v3.1/all';
-    return axios.get(API_URL);
+    return requests.get(`${requestPath.getCountries}`);
   },
 
   // Post API

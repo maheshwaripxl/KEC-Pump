@@ -8,10 +8,10 @@ import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 import {useDispatch} from 'react-redux';
 
 const RadioCompType9 = ({
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -32,7 +32,6 @@ const RadioCompType9 = ({
         }),
       );
       postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-      // getProgress();
     }
   };
 
@@ -84,10 +83,14 @@ const RadioCompType9 = ({
           </Text>
         </View>
         <View style={styles.button}>
-          <CustomButton
-            btnText={APIresponse[0]?.button}
-            onpress={() => buttonFunction()}
-          />
+          {NextBtn ? (
+            <CustomButton btnText={NextBtn} onpress={() => buttonFunction()} />
+          ) : (
+            <CustomButton
+              btnText={APIresponse[0]?.button}
+              onpress={() => buttonFunction()}
+            />
+          )}
         </View>
       </View>
     </View>

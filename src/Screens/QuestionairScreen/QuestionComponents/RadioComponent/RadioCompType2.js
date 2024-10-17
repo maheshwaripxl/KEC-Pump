@@ -9,12 +9,10 @@ import {useDispatch} from 'react-redux';
 
 const RadioCompType2 = ({
   loader,
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
-  postMultiQuestionIdAPI,
-  handleNext,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -47,8 +45,6 @@ const RadioCompType2 = ({
           }),
         );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        // handleNext()
-        // getProgress();
       }
     }
   };
@@ -104,8 +100,13 @@ const RadioCompType2 = ({
             </View>
 
             <View style={styles.button}>
-              {selectedButton == answerResponse[0]?.answer_id ||
-              selectedButton == answerResponse[1]?.answer_id ? (
+              {NextBtn ? (
+                <CustomButton
+                  btnText={NextBtn}
+                  onpress={() => buttonFunction()}
+                />
+              ) : selectedButton == answerResponse[0]?.answer_id ||
+                selectedButton == answerResponse[1]?.answer_id ? (
                 <CustomButton
                   btnText="GO TO VISCOSITY"
                   onpress={() => buttonFunction()}

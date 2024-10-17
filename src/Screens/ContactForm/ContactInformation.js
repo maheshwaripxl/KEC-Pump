@@ -13,12 +13,13 @@ import CustomButton from '../../Components/CustomButton/CustomButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import Header from '../../Components/Header/Header';
-import {HEIGHT} from '../../Config/AppConst';
+import {HEIGHT, WIDTH} from '../../Config/AppConst';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ApiManager from '../../API/Api';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useSelector} from 'react-redux';
 import {countries} from '../../Array/CountryArray';
+import Snackbar from 'react-native-snackbar';
 
 const ContactInformation = () => {
   const selector = useSelector(state => state.AnswerData);
@@ -31,16 +32,123 @@ const ContactInformation = () => {
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [companySite, setCompanySite] = useState('');
+  const [url, setUrl] = useState('');
   const [companyType, setCompanyType] = useState('');
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState([]);
   const [mobileNo, setMobileNo] = useState('');
+
+  const [nameError, setnameError] = useState(false);
+  const [emailError, setemailError] = useState(false);
+  const [numberError, setnumberError] = useState(false);
+  const [selectcountry, setSelectCountry] = useState(false);
+
+  const [isValid, setIsValid] = useState(null);
   const [checked, setChecked] = useState(false);
 
+  useEffect(() => {
+    getContriesAPI();
+  }, []);
+
+  const nameOnChange = text => {
+    setnameError(false);
+    const formattedName = text.replace(/\s/g, '');
+
+    if (text.length === 1 && text.trim() === '') {
+      setFullName(formattedName);
+    } else {
+      setFullName(text);
+    }
+  };
+
+  const emailOnChange = text => {
+    setemailError(false);
+    const formattedEmail = text.replace(/\s/g, '');
+    setEmail(formattedEmail);
+  };
+
+  var nameRegex = /^[^\s]+$/;
+  var isNameValid = nameRegex.test(fullName);
+
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var isEmailValid = emailRegex.test(email);
+
+  const nameValidationFunction = () => {
+    if (fullName.length > 0 && fullName.length < 3 && isNameValid) {
+      setnameError(true);
+    }
+  };
+
+  const emailValidationFunction = () => {
+    if (email.length > 0 && !isEmailValid) {
+      setemailError(true);
+    }
+  };
+
+  const validateUrl = () => {
+    const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/[^\s]*)?$/i;
+    setIsValid(urlPattern.test(url));
+  };
+
+  const onChangeNumber = inputValue => {
+    var phoneRegex = /^((\+|00)968)?\d{8}$/;
+    var isValidNumber = phoneRegex.test(mobileNo);
+
+    const formattedEmail = inputValue.replace(/\s/g, '');
+
+    if (!isValidNumber) {
+      setnumberError(true);
+    } else {
+      setnumberError(false);
+    }
+    setMobileNo(formattedEmail);
+  };
+
   const SubmitFunction = () => {
-    ContactFormAPI();
-    navigation.navigate('thankyouscreen');
-    console.log('0002021022');
+    if (fullName == '') {
+      Snackbar.show({
+        text: 'Please enter your name',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (email == '') {
+      Snackbar.show({
+        text: 'Please enter your email',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (confirmEmail == '') {
+      Snackbar.show({
+        text: 'Please enter your confirmEmail',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (companyName == '') {
+      Snackbar.show({
+        text: 'Please enter your company name',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (url == '') {
+      Snackbar.show({
+        text: 'Please enter your company website',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (selectcountry) {
+      Snackbar.show({
+        text: 'Please select your country',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else if (mobileNo === null) {
+      Snackbar.show({
+        text: 'Please enter your phone number',
+        backgroundColor: '#D1264A',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      ContactFormAPI();
+    }
   };
 
   const data1 = [
@@ -57,15 +165,25 @@ const ContactInformation = () => {
     {label: 'Private / Others', value: '5'},
   ];
 
+  const getContriesAPI = async () => {
+    ApiManager.getAllCountries()
+      .then(res => {
+        setCountry(res?.data?.response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const ContactFormAPI = async () => {
     const params = {
       title: title,
-      fullname: fullName,
-      email: email,
+      username: fullName,
+      user_email: email,
       repeat_email: confirmEmail,
       company_name: companyName,
       company_type: companyType,
-      company_website: companySite,
+      company_website: url,
       country: country,
       mobile_no: mobileNo,
       data: selector?.responses,
@@ -75,10 +193,9 @@ const ContactInformation = () => {
 
     ApiManager.postContactForm(params)
       .then(res => {
-        console.log('11res?.data', res?.data);
-
         if (res?.data?.status == 200) {
           console.log('log', res?.data);
+          navigation.navigate('thankyouscreen');
         }
       })
       .catch(error => {
@@ -118,72 +235,99 @@ const ContactInformation = () => {
                 labelField="label"
                 valueField="value"
                 iconColor="#fff"
-                style={{width: 75}}
-                containerStyle={{width: 125}}
+                style={{width: 80, justifyContent: 'center'}}
+                containerStyle={{width: 80, marginTop: 16}}
                 itemTextStyle={styles.itemText}
                 value={title}
                 onChange={item => {
                   setTitle(item.label);
                 }}
-                selectedTextStyle={styles.selectedTextStyle1}
                 placeholder="Mr"
-                placeholderStyle={styles.selectedTextStyle}
+                selectedTextStyle={styles.selectedTextStyle1}
+                placeholderStyle={styles.placeholderStyle}
                 placeholderTextColor={'#fff'}
               />
               <TextInput
                 placeholder="Enter your name"
                 placeholderTextColor={'#fff'}
-                style={{color: '#fff'}}
+                style={[styles.input, {width: WIDTH(48)}]}
                 value={fullName}
-                onChangeText={value => setFullName(value)}
+                onChangeText={txt => nameOnChange(txt)}
+                onBlur={nameValidationFunction}
               />
             </View>
-           
           </View>
+
+          {nameError ? (
+            <Text style={{color: 'red'}}>
+              Enter atleast 3 characters for name
+            </Text>
+          ) : null}
 
           <Text style={styles.textName}>Email</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter email"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={email}
-              onChangeText={value => setEmail(value)}
+              onChangeText={value => emailOnChange(value)}
+              onBlur={emailValidationFunction}
             />
           </View>
+
+          {emailError ? (
+            <Text style={{color: 'red'}}>Enter valid email</Text>
+          ) : null}
 
           <Text style={styles.textName}>Confirm your email</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Re-enter email"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={confirmEmail}
               onChangeText={value => setConfirmEmail(value)}
             />
           </View>
+          {confirmEmail.length > 0 && email !== confirmEmail ? (
+            <Text style={{color: 'red'}}>
+              email and confirmEmail doesn't match
+            </Text>
+          ) : null}
 
-          <Text style={styles.textName}>Full company name</Text>
+          <Text style={styles.textName}>company name</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter company name"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              style={styles.input}
               value={companyName}
               onChangeText={value => setCompanyName(value)}
             />
           </View>
+
+          {nameError ? (
+            <Text style={{color: 'red'}}>Enter your for companyName</Text>
+          ) : null}
 
           <Text style={styles.textName}>Company website</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder="Enter website"
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
-              value={companySite}
-              onChangeText={value => setCompanySite(value)}
+              style={styles.input}
+              value={url}
+              onChangeText={value => setUrl(value)}
+              onBlur={validateUrl}
             />
           </View>
+
+          {!isValid && url.length > 0 ? (
+            <Text style={{marginTop: 10, color: 'red'}}>
+              {isValid ? 'Valid URL!' : 'Invalid URL!'}
+            </Text>
+          ) : null}
 
           <Text style={styles.textName}>Company type</Text>
           <View style={styles.inputView2}>
@@ -194,7 +338,7 @@ const ContactInformation = () => {
               valueField="value"
               iconColor="#fff"
               style={styles.dropdown2}
-              containerStyle={styles.dropdownContainer2}
+              // containerStyle={styles.dropdownContainer2}
               itemTextStyle={styles.itemText}
               value={companyType}
               onChange={item => {
@@ -202,7 +346,7 @@ const ContactInformation = () => {
               }}
               selectedTextStyle={styles.selectedTextStyle}
               placeholder="Merchant"
-              placeholderStyle={styles.selectedTextStyle}
+              placeholderStyle={styles.placeholderStyle}
               placeholderTextColor={'#fff'}
             />
           </View>
@@ -210,33 +354,40 @@ const ContactInformation = () => {
           <Text style={styles.textName}>Your country</Text>
           <View style={styles.inputView}>
             <Dropdown
-              data={countries}
-              labelField="label"
-              valueField="value"
+              data={country}
+              labelField="country"
+              valueField="countryid"
               iconColor="#fff"
               style={styles.dropdown}
               value={country}
               itemTextStyle={styles.itemText}
               onChange={item => {
-                setCountry(item.label);
+                setCountry(item.label), setSelectCountry(false);
               }}
               selectedTextStyle={styles.selectedTextStyle}
-              placeholder="Select Country"
-              placeholderStyle={styles.selectedTextStyle}
+              // placeholder="Select Country"
+              placeholderStyle={styles.placeholderStyle}
               placeholderTextColor={'#fff'}
             />
           </View>
+
+          {/* {!country ? <Text style={{color: 'red'}}>Select country</Text> : null} */}
 
           <Text style={styles.textName}>Phone number</Text>
           <View style={styles.bgm}>
             <TextInput
               placeholder=""
               placeholderTextColor={'#fff'}
-              style={{color: '#fff'}}
+              keyboardType="numeric"
+              style={styles.input}
               value={mobileNo}
-              onChangeText={value => setMobileNo(value)}
+              onChangeText={value => onChangeNumber(value)}
             />
           </View>
+
+          {numberError ? (
+            <Text style={{color: 'red'}}>Enter your phonr number</Text>
+          ) : null}
 
           <View style={{marginTop: 10, flexDirection: 'row'}}>
             <TouchableOpacity onPress={() => setChecked(true)}>

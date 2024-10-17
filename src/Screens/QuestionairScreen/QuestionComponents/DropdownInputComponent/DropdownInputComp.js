@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DM_sans_Bold,
   FONTSIZE,
@@ -19,16 +19,21 @@ import {useDispatch} from 'react-redux';
 import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const DropdownInputComp = ({
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
-  handleNext,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
 
   const [inputValue, setInputValue] = useState('');
-  const [selectId, setSelectId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+
+  useEffect(() => {
+    if (answerResponse && answerResponse.length > 0) {
+      setSelectedId(answerResponse[0].answer_id);
+    }
+  }, [answerResponse]);
 
   const buttonFunction = () => {
     if (inputValue == '') {
@@ -37,7 +42,7 @@ const DropdownInputComp = ({
         backgroundColor: '#D1264A',
         duration: Snackbar.LENGTH_SHORT,
       });
-    } else if (selectId == null) {
+    } else if (selectedId == null) {
       Snackbar.show({
         text: 'Select unit',
         backgroundColor: '#D1264A',
@@ -47,14 +52,13 @@ const DropdownInputComp = ({
       dispatch(
         AnswerDataFunction({
           question_id: APIresponse[0]?.id,
-          answerID: selectId ?? '',
+          answerID: selectedId ?? '',
           inputData: inputValue ?? '',
         }),
       );
-      postQuestionIdAPI(APIresponse[0]?.next_question_id, selectId);
+      postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedId);
       setInputValue('');
-      setSelectId(null);
-      // getProgress();
+      setSelectedId(null);
     }
   };
 
@@ -79,12 +83,13 @@ const DropdownInputComp = ({
                 maxHeight={300}
                 labelField="answer_text"
                 valueField="answer_id"
+                value={selectedId}
                 iconColor="#fff"
                 style={styles.dropdown}
                 containerStyle={styles.dropdownContainer}
                 itemTextStyle={styles.itemText}
                 onChange={item => {
-                  setSelectId(item?.answer_id);
+                  setSelectedId(item?.answer_id);
                 }}
                 selectedTextStyle={styles.selectedTextStyle}
                 placeholderStyle={styles.selectedTextStyle}
@@ -102,12 +107,19 @@ const DropdownInputComp = ({
           </View>
 
           <View style={styles.button}>
-            <CustomButton
-              btnText={
-                APIresponse[0]?.button == '' ? 'Next' : APIresponse[0]?.button
-              }
-              onpress={buttonFunction}
-            />
+            {NextBtn ? (
+              <CustomButton
+                btnText={NextBtn}
+                onpress={() => buttonFunction()}
+              />
+            ) : (
+              <CustomButton
+                btnText={
+                  APIresponse[0]?.button == '' ? 'Next' : APIresponse[0]?.button
+                }
+                onpress={buttonFunction}
+              />
+            )}
           </View>
         </View>
       </View>

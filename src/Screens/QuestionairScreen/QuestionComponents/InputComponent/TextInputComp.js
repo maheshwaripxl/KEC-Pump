@@ -12,7 +12,7 @@ const TextInputComp = ({
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
-  handleNext,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
@@ -34,7 +34,6 @@ const TextInputComp = ({
       );
       postQuestionIdAPI(APIresponse[0]?.next_question_id);
       setInputValue('');
-      getProgress();
     }
   };
 
@@ -59,10 +58,17 @@ const TextInputComp = ({
           </View>
 
           <View style={styles.button}>
-            <CustomButton
-              btnText={APIresponse[0]?.button}
-              onpress={buttonFunction}
-            />
+            {NextBtn ? (
+              <CustomButton
+                btnText={NextBtn}
+                onpress={() => buttonFunction()}
+              />
+            ) : (
+              <CustomButton
+                btnText={APIresponse[0]?.button}
+                onpress={buttonFunction}
+              />
+            )}
           </View>
         </View>
       </View>

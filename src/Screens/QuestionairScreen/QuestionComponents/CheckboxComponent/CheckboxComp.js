@@ -23,13 +23,9 @@ import TextAreaComp from '../TextAreaComponent/TextAreaComp';
 import RangeSelectComp from '../RangeSelectComponent/RangeSelectComp';
 import {useDispatch} from 'react-redux';
 import CountryComponent from '../CountryComponent/CountryComponent';
+import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
-const CheckboxComp = ({
-  getProgress,
-  APIresponse,
-  answerResponse,
-  postQuestionIdAPI,
-}) => {
+const CheckboxComp = ({APIresponse, answerResponse, postQuestionIdAPI}) => {
   const dispatch = useDispatch();
 
   const [quesResponse, setQuesResponse] = useState([]);
@@ -98,6 +94,7 @@ const CheckboxComp = ({
             count={count}
             setCount={setCount}
             responseArray={[item]}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -109,6 +106,7 @@ const CheckboxComp = ({
             count={count}
             setCount={setCount}
             APIresponse={[item]}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -122,6 +120,7 @@ const CheckboxComp = ({
             setCount={setCount}
             APIresponse={[item]}
             answerResponse={[item?.answers]}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -135,6 +134,7 @@ const CheckboxComp = ({
             setCount={setCount}
             APIresponse={[item]}
             answerResponse={[item?.answers]}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -146,8 +146,9 @@ const CheckboxComp = ({
             count={count}
             setCount={setCount}
             APIresponse={[item]}
-            answerResponse={[item?.answers]}
+            answerResponse={item?.answers}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -162,6 +163,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -176,6 +178,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -190,6 +193,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -204,6 +208,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -217,6 +222,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -230,6 +236,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -243,6 +250,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -257,6 +265,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -271,6 +280,7 @@ const CheckboxComp = ({
             APIresponse={[item]}
             answerResponse={[item?.answers]}
             handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
             postQuestionIdAPI={(question_id, answer_id) =>
               changeIndex(question_id, answer_id)
             }
@@ -280,14 +290,15 @@ const CheckboxComp = ({
       case 'country':
         return (
           <CountryComponent
-          count={count}
-          setCount={setCount}
-          APIresponse={[item]}
-          answerResponse={[item?.answers]}
-          handleNext={handleNext}
-          postQuestionIdAPI={(question_id, answer_id) =>
-            changeIndex(question_id, answer_id)
-          }
+            count={count}
+            setCount={setCount}
+            APIresponse={[item]}
+            answerResponse={[item?.answers]}
+            handleNext={handleNext}
+            NextBtn={quesResponse?.nextButton}
+            postQuestionIdAPI={(question_id, answer_id) =>
+              changeIndex(question_id, answer_id)
+            }
           />
         );
     }
@@ -310,7 +321,7 @@ const CheckboxComp = ({
       <TouchableOpacity
         onPress={() => StoreIdsFunction(item?.answer_id)}
         isSelected={selectedIds === item?.answer_id}
-        style={{width: WIDTH(50), flexDirection: 'row', gap: 7}}>
+        style={{width: WIDTH(45), flexDirection: 'row', gap: 7}}>
         <MaterialCommunityIcons
           name={
             isSelected
@@ -334,7 +345,7 @@ const CheckboxComp = ({
       {nextcomp ? (
         renderComponents(currentQuestion)
       ) : (
-        <View style={{marginHorizontal: 30}}>
+        <View style={{marginHorizontal: 22}}>
           <View style={{marginTop: HEIGHT(5)}}>
             <Text style={styles.mainTitle}>
               {APIresponse[0]?.question_text}

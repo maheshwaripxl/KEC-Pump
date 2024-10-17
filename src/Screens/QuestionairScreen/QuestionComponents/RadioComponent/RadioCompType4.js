@@ -7,10 +7,10 @@ import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 import {useDispatch} from 'react-redux';
 
 const RadioCompType4 = ({
-  getProgress,
   APIresponse,
   answerResponse,
   postQuestionIdAPI,
+  NextBtn,
 }) => {
   const dispatch = useDispatch();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -32,7 +32,6 @@ const RadioCompType4 = ({
           }),
         );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        // getProgress();
       } else {
         dispatch(
           AnswerDataFunction({
@@ -42,7 +41,6 @@ const RadioCompType4 = ({
           }),
         );
         postQuestionIdAPI(APIresponse[0]?.next_question_id, selectedButton);
-        // getProgress();
       }
     }
   };
@@ -113,7 +111,9 @@ const RadioCompType4 = ({
         </View>
 
         <View style={styles.button}>
-          {selectedButton == answerResponse[2]?.answer_id ? (
+          {NextBtn ? (
+            <CustomButton btnText={NextBtn} onpress={() => buttonFunction()} />
+          ) : selectedButton == answerResponse[2]?.answer_id ? (
             <CustomButton
               btnText="GO TO SELF PRIMING"
               onpress={() => buttonFunction()}

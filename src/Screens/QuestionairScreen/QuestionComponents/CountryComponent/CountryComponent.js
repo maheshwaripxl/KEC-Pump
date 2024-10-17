@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Snackbar from 'react-native-snackbar';
 import {useDispatch} from 'react-redux';
@@ -12,27 +12,29 @@ import {
 import {Dropdown} from 'react-native-element-dropdown';
 import ApiManager from '../../../../API/Api';
 import {useNavigation} from '@react-navigation/native';
-import {countries} from '../../../../Array/CountryArray';
 import {AnswerDataFunction} from '../../../../Redux/Reducers/OptionIDData';
 
 const CountryComponent = ({APIresponse}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [countries, setCountries] = useState([]);
   const [title, setTitle] = useState('');
 
-  //   useEffect(() => {
-  //     GetCountryNames();
-  //   }, []);
+  useEffect(() => {
+    getContriesAPI();
+  }, []);
 
-  //   const GetCountryNames = async () => {
-  //     ApiManager.getAllCountries()
-  //       .then(res => {
-  //         setCountries(res?.data); // Ensure you're setting the correct array from the API response
-  //       })
-  //       .catch(err => {
-  //         console.log('err', err);
-  //       });
-  //   };
+  const getContriesAPI = async () => {
+    ApiManager.getAllCountries()
+      .then(res => {
+        if (res?.status == 200) {
+          setCountries(res?.data?.response);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   const buttonFunction = () => {
     if (!title) {
@@ -49,7 +51,7 @@ const CountryComponent = ({APIresponse}) => {
           inputData: title,
         }),
       );
-      navigation.navigate('contactInformation')
+      navigation.navigate('contactInformation');
     }
   };
 
@@ -59,8 +61,8 @@ const CountryComponent = ({APIresponse}) => {
       <View style={styles.inputView}>
         <Dropdown
           data={countries}
-          labelField="label"
-          valueField="value"
+          labelField="country"
+          valueField="countryid"
           iconColor="#fff"
           style={styles.dropdown}
           value={title}
