@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-
     paddingVertical: HEIGHT(5),
     paddingHorizontal: WIDTH(6),
   },
@@ -94,37 +93,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: HEIGHT(24),
   },
+
   valueText: {
     fontSize: 16,
     width: 35,
     textAlign: 'center',
     color: '#fff',
   },
+
   thumb: {
     width: 20,
     height: 20,
     borderRadius: 10,
     backgroundColor: '#c79500',
   },
+
   rail: {
     flex: 1,
     height: 4,
     borderRadius: 2,
     backgroundColor: '#d3d3d3',
   },
+
   railSelected: {
     height: 4,
     backgroundColor: '#c79500',
     borderRadius: 2,
   },
+
   labelText: {
     fontSize: 12,
     color: '#c79500',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
   },
 
   button: {
